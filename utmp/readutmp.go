@@ -19,7 +19,7 @@
 
 /* Written by Eric Lagergren <ericscottlagergren@gmail.com> */
 
-package utmp
+package gnulib
 
 import (
 	"bytes"

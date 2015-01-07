@@ -1,4 +1,4 @@
-package utmp
+package gnulib
 
 import (
 	"encoding/binary"

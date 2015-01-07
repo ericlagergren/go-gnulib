@@ -19,7 +19,7 @@
 
 /* Written by Eric Lagergren */
 
-package ttyname
+package gnulib
 
 import (
 	"errors"
