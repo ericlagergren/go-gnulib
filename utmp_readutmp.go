@@ -33,6 +33,15 @@ var (
 	nul = []byte{0}
 )
 
+func clen(n []byte) int {
+	for i := 0; i < len(n); i++ {
+		if n[i] == 0 {
+			return i
+		}
+	}
+	return len(n)
+}
+
 // Determines whether the Utmp entry is desired by the user who asked for
 // the specified options
 func (u *Utmp) isDesirable(opts int) bool {
@@ -62,7 +71,7 @@ func (u *Utmp) IsUserProcess() bool {
 // Return stringified version of a username.
 // Trims after first null ([]byte{0}) byte
 func (u *Utmp) ExtractTrimmedName() string {
-	return string(u.User[:bytes.Index(u.User[:], nul)])
+	return string(u.User[:clen(u.User[:])])
 }
 
 // Reads entries from a *tmp file and returns a channel of *Utmps

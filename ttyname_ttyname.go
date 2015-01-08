@@ -24,7 +24,7 @@ package gnulib
 import (
 	"errors"
 	"os"
-	"path/filepath"
+	"path"
 	"syscall"
 	"unsafe"
 )
@@ -115,7 +115,7 @@ func checkDirs(dir string) (*string, error) {
 	}
 
 	for _, name := range names {
-		fullPath = filepath.Join(dir, name)
+		fullPath = path.Join(dir, name)
 		fstat := new(syscall.Stat_t)
 
 		err = syscall.Stat(fullPath, fstat)
