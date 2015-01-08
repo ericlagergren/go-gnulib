@@ -40,17 +40,6 @@ type UtmpError struct {
 	LockErr  error
 }
 
-// Convert syscall.Utsname.Release into a byte array
-// For internal use
-func int8ToByte(rel [65]int8) []byte {
-	s := [65]byte{}
-	i := 0
-	for ; s[i] != 0; i++ {
-		s[i] = byte(rel[i])
-	}
-	return s[:]
-}
-
 // Similar to glibc's gettimeofday()
 func (t *timeVal) GetTimeOfDay() {
 	now := time.Now().Unix()
@@ -215,7 +204,8 @@ func WriteWtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, uty
 
 	name := new(syscall.Utsname)
 	if syscall.Uname(*&name) == nil {
-		_ = copy(u.Host[:], int8ToByte(name.Release))
+		// int8ToByte65 in gen_helper_funcs.go
+		_ = copy(u.Host[:], int8ToByte(name.Release[:]))
 	}
 
 	err := UpdWtmp(fi, lk, u)
@@ -245,7 +235,8 @@ func WriteUtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, uty
 
 	name := new(syscall.Utsname)
 	if syscall.Uname(*&name) == nil {
-		_ = copy(u.Host[:], int8ToByte(name.Release))
+		// int8ToByte65 in gen_helper_funcs.go
+		_ = copy(u.Host[:], int8ToByte(name.Release[:]))
 	}
 
 	if utype == DeadProcess {

@@ -2,35 +2,18 @@ package gnulib
 
 import (
 	"io"
+	"os"
 	"syscall"
 	"unsafe"
 )
 
 type DirentBuf map[int64]*syscall.Dirent
 
-// Because we don't import os and dirInfo isn't exported anyway
+// Because os' dirInfo isn't exported
 type dirInfo struct {
 	buf  []byte // buffer for directory I/O
 	nbuf int    // length of buf; return value from Getdirentries
 	bufp int    // location of next record in buf.
-}
-
-// Find length of a C-style string
-func clen(n []byte) int {
-	for i := 0; i < len(n); i++ {
-		if n[i] == 0 {
-			return i
-		}
-	}
-	return len(n)
-}
-
-// change -1 to 0
-func fixCount(n int, err error) (int, error) {
-	if n < 0 {
-		n = 0
-	}
-	return n, err
 }
 
 // Read a buffer (dir) into the pointer to the DirentBuf, `db`

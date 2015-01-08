@@ -28,15 +28,6 @@ import (
 	"syscall"
 )
 
-func clen(n []byte) int {
-	for i := 0; i < len(n); i++ {
-		if n[i] == 0 {
-			return i
-		}
-	}
-	return len(n)
-}
-
 // Determines whether the Utmp entry is desired by the user who asked for
 // the specified options
 func (u *Utmp) isDesirable(opts int) bool {
