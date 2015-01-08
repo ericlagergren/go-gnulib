@@ -23,6 +23,7 @@ package gnulib
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 	"syscall"
@@ -64,7 +65,7 @@ var (
 		"/dev/term/",
 		"/dev/zcons/",
 	}
-	stat *syscall.Stat_t
+	Stat = new(syscall.Stat_t)
 )
 
 func fileMode(longMode uint32) uint32 {
@@ -143,8 +144,8 @@ func checkDirs(dir string) (*string, error) {
 		}
 
 		if fmode&ModeCharDevice != 0 &&
-			fstat.Ino == stat.Ino &&
-			fstat.Rdev == stat.Rdev {
+			fstat.Ino == Stat.Ino &&
+			fstat.Rdev == Stat.Rdev {
 			return &fullPath, nil
 		}
 	}
@@ -171,28 +172,19 @@ func TtyName(fd uintptr) (*string, error) {
 	}
 
 	// gather inode and rdev info about fd
-	err := syscall.Fstat(int(fd), stat)
+	err := syscall.Fstat(int(fd), Stat)
 	if err != nil {
 		return nil, err
 	}
 
 	// loop over most likely directories
 	for _, v := range searchDevs {
-		name, err = checkDirs(v)
-		if err != nil && err != NotFound {
-			return nil, err
-		}
-
-		return name, nil
+		name, _ = checkDirs(v)
 	}
 
 	// if we can't find it do full scan of /dev/
 	if name == nil {
-		name, err = checkDirs(dev)
-		if err != nil && err != NotFound {
-			return nil, err
-		}
-
+		name, _ = checkDirs(dev)
 		return name, nil
 	}
 
