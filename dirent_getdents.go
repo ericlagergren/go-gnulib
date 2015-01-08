@@ -1,7 +1,6 @@
 package gnulib
 
 import (
-	"fmt"
 	"io"
 	"syscall"
 	"unsafe"

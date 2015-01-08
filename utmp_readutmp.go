@@ -22,15 +22,10 @@
 package gnulib
 
 import (
-	"bytes"
 	"encoding/binary"
 	"io"
 	"os"
 	"syscall"
-)
-
-var (
-	nul = []byte{0}
 )
 
 func clen(n []byte) int {
