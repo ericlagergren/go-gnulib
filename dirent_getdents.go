@@ -16,27 +16,8 @@ type dirInfo struct {
 	bufp int    // location of next record in buf.
 }
 
-// Convert Dirent.Name to byte slice
-func int8ToByte(rel [256]int8) []byte {
-	s := [256]byte{}
-	for i := 0; i < len(rel); i++ {
-		s[i] = byte(rel[i])
-	}
-	return s[:clen8(rel)]
-}
-
 // Find length of a C-style string
 func clen(n []byte) int {
-	for i := 0; i < len(n); i++ {
-		if n[i] == 0 {
-			return i
-		}
-	}
-	return len(n)
-}
-
-// clen() but for int8 instead of []byte
-func clen8(n [256]int8) int {
 	for i := 0; i < len(n); i++ {
 		if n[i] == 0 {
 			return i
