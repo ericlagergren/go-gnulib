@@ -23,6 +23,7 @@ package gnulib
 
 import (
 	"errors"
+	"io"
 	"os"
 	"path"
 	"syscall"
@@ -67,40 +68,10 @@ var (
 	Stat = new(syscall.Stat_t)
 )
 
-func fileMode(longMode uint32) uint32 {
-	mode := longMode & ModePerm
-	switch longMode & syscall.S_IFMT {
-	case syscall.S_IFBLK:
-		mode |= ModeDevice
-	case syscall.S_IFCHR:
-		mode |= ModeDevice | ModeCharDevice
-	case syscall.S_IFDIR:
-		mode |= ModeDir
-	case syscall.S_IFIFO:
-		mode |= ModeNamedPipe
-	case syscall.S_IFLNK:
-		mode |= ModeSymlink
-	case syscall.S_IFREG:
-		// nothing to do
-	case syscall.S_IFSOCK:
-		mode |= ModeSocket
-	}
-	if longMode&syscall.S_ISGID != 0 {
-		mode |= ModeSetgid
-	}
-	if longMode&syscall.S_ISUID != 0 {
-		mode |= ModeSetuid
-	}
-	if longMode&syscall.S_ISVTX != 0 {
-		mode |= ModeSticky
-	}
-	return mode
-}
-
 func checkDirs(dir string) (*string, error) {
 	var (
-		rs       *string
-		fullPath string
+		rs      *string
+		nameBuf = make([]byte, 256)
 	)
 
 	fi, err := os.Open(dir)
@@ -109,32 +80,41 @@ func checkDirs(dir string) (*string, error) {
 	}
 	defer fi.Close()
 
-	names, err := fi.Readdirnames(-1)
-	if err != nil {
+	dirBuf := make(DirentBuf)
+	err = ReadDir(int(fi.Fd()), -1, &dirBuf)
+	if err != nil && err != io.EOF {
 		return nil, err
 	}
 
-	for _, name := range names {
-		fullPath = path.Join(dir, name)
-		fstat := new(syscall.Stat_t)
+	for _, v := range dirBuf {
+		// quickly skip most entries
+		if v.Ino != Stat.Ino {
+			continue
+		}
 
-		err = syscall.Stat(fullPath, fstat)
+		_ = copy(nameBuf, int8ToByte(v.Name[:]))
+		name := path.Join(dir, string(nameBuf))
+
+		// Directories to skip
+		if name == "/dev/stderr" ||
+			name == "/dev/stdin" ||
+			name == "/dev/stdout" ||
+			len(name) >= 8 &&
+				name[0:8] == "/dev/fd/" {
+			continue
+		}
+
+		// We have to stat the file to determine its Rdev
+		fstat := new(syscall.Stat_t)
+		err = syscall.Stat(name, fstat)
 		if err != nil {
 			continue
 		}
 
-		// Directories to skip
-		if fullPath == "/dev/stderr" ||
-			fullPath == "/dev/stdin" ||
-			fullPath == "/dev/stdout" ||
-			len(fullPath) >= 8 &&
-				fullPath[0:8] == "/dev/fd/" {
-			continue
-		}
-
-		fmode := fileMode(fstat.Mode)
+		// file mode sans permission bits
+		fmode := os.FileMode(fstat.Mode)
 		if fmode&ModeDir != 0 {
-			rs, err = checkDirs(fullPath)
+			rs, err = checkDirs(name)
 			if err != nil {
 				continue
 			}
@@ -145,9 +125,11 @@ func checkDirs(dir string) (*string, error) {
 		if fmode&ModeCharDevice != 0 &&
 			fstat.Ino == Stat.Ino &&
 			fstat.Rdev == Stat.Rdev {
-			return &fullPath, nil
+			return &name, nil
 		}
+
 	}
+
 	return nil, NotFound
 }
 
