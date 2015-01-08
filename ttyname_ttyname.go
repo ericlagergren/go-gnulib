@@ -23,7 +23,6 @@ package gnulib
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"path/filepath"
 	"syscall"
