@@ -45,8 +45,7 @@ func (u *Utmp) isDesirable(opts int) bool {
 }
 
 // Basically the same as this C macro:
-//
-//# define IS_USER_PROCESS(U)                                     \
+// # define IS_USER_PROCESS(U)                                     \
 //   (UT_USER (U)[0]                                              \
 //    && (UT_TYPE_USER_PROCESS (U)                                \
 //        || (UT_TYPE_NOT_DEFINED && UT_TIME_MEMBER (U) != 0)))

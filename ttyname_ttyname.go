@@ -35,10 +35,11 @@ const dev = "/dev"
 var (
 	NotFound   = errors.New("device not found")
 	NotTty     = errors.New("not a tty device")
+	proc       = "/proc/self/fd"
 	searchDevs = []string{
+		"/dev/pts/",
 		"/dev/console",
 		"/dev/wscons",
-		"/dev/pts/",
 		"/dev/vt/",
 		"/dev/term/",
 		"/dev/zcons/",
@@ -131,17 +132,36 @@ func isTty(fd uintptr) bool {
 func TtyName(fd uintptr) (*string, error) {
 	var name *string
 
+	// Does `fd` even describe a terminal? ;)
 	if !isTty(fd) {
 		return nil, NotTty
 	}
 
-	// gather inode and rdev info about fd
+	// Gather inode and rdev info about fd
 	err := syscall.Fstat(int(fd), Stat)
 	if err != nil {
 		return nil, err
 	}
 
-	// loop over most likely directories
+	// Needs to be a character device
+	if os.FileMode(Stat.Mode)&os.ModeCharDevice != 0 {
+		return nil, NotTty
+	}
+
+	// strace of tty stats the return of readlink(/proc/self/fd)
+	// let's do that instead, and fall back on searching /dev/
+	if *name, _ = os.Readlink(proc); name != nil {
+		fstat := new(syscall.Stat_t)
+		_ = syscall.Stat(*name, fstat)
+
+		if os.FileMode(fstat.Mode)&os.ModeCharDevice == 0 &&
+			fstat.Ino == Stat.Ino &&
+			fstat.Rdev == Stat.Rdev {
+			return name, nil
+		}
+	}
+
+	// Loop over most likely directories second
 	for _, v := range searchDevs {
 		name, _ = checkDirs(v)
 		if name != nil {
@@ -149,7 +169,7 @@ func TtyName(fd uintptr) (*string, error) {
 		}
 	}
 
-	// if we can't find it do full scan of /dev/
+	// If we can't find it above, do full scan of /dev/
 	if name == nil {
 		name, _ = checkDirs(dev)
 		return name, nil
