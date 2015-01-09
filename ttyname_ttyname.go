@@ -104,7 +104,6 @@ func checkDirs(dir string) (*string, error) {
 		if fmode&os.ModeCharDevice == 0 &&
 			fstat.Ino == Stat.Ino &&
 			fstat.Rdev == Stat.Rdev {
-			//fmt.Println(name, &name)
 			return &name, nil
 		}
 
