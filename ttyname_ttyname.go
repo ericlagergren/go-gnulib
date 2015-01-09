@@ -46,6 +46,9 @@ var (
 	Stat = new(syscall.Stat_t)
 )
 
+// recursively walk through the named directory `dir` until the correct device
+// is found.
+// Directories in []searchDevs are automatically skipped
 func checkDirs(dir string) (*string, error) {
 	var (
 		rs      *string
@@ -86,7 +89,6 @@ func checkDirs(dir string) (*string, error) {
 		fstat := new(syscall.Stat_t)
 		err = syscall.Stat(name, fstat)
 		if err != nil {
-			panic(err)
 			continue
 		}
 
@@ -112,6 +114,7 @@ func checkDirs(dir string) (*string, error) {
 	return nil, NotFound
 }
 
+// quick istty check
 func isTty(fd uintptr) bool {
 	var termios syscall.Termios
 
@@ -124,6 +127,7 @@ func isTty(fd uintptr) bool {
 	return err == 0
 }
 
+// Returns a pointer to a string from a uintptr describing a file descriptor
 func TtyName(fd uintptr) (*string, error) {
 	var name *string
 
