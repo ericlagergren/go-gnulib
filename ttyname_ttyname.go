@@ -30,28 +30,6 @@ import (
 	"unsafe"
 )
 
-const (
-	// The single letters are the abbreviations
-	// used by the String method's formatting.
-	ModeDir        = 1 << (32 - 1 - iota) // d: is a directory
-	ModeAppend                            // a: append-only
-	ModeExclusive                         // l: exclusive use
-	ModeTemporary                         // T: temporary file (not backed up)
-	ModeSymlink                           // L: symbolic link
-	ModeDevice                            // D: device file
-	ModeNamedPipe                         // p: named pipe (FIFO)
-	ModeSocket                            // S: Unix domain socket
-	ModeSetuid                            // u: setuid
-	ModeSetgid                            // g: setgid
-	ModeCharDevice                        // c: Unix character device, when ModeDevice is set
-	ModeSticky                            // t: sticky
-
-	// Mask for the type bits. For regular files, none will be set.
-	ModeType = ModeDir | ModeSymlink | ModeNamedPipe | ModeSocket | ModeDevice
-
-	ModePerm = 0777 // permission bits
-)
-
 const dev = "/dev"
 
 var (
@@ -93,7 +71,7 @@ func checkDirs(dir string) (*string, error) {
 		}
 
 		_ = copy(nameBuf, int8ToByte(v.Name[:]))
-		name := path.Join(dir, string(nameBuf))
+		name := path.Join(dir, string(nameBuf[:clen(nameBuf)]))
 
 		// Directories to skip
 		if name == "/dev/stderr" ||
@@ -108,12 +86,13 @@ func checkDirs(dir string) (*string, error) {
 		fstat := new(syscall.Stat_t)
 		err = syscall.Stat(name, fstat)
 		if err != nil {
+			panic(err)
 			continue
 		}
 
 		// file mode sans permission bits
 		fmode := os.FileMode(fstat.Mode)
-		if fmode&ModeDir != 0 {
+		if fmode.IsDir() {
 			rs, err = checkDirs(name)
 			if err != nil {
 				continue
@@ -122,9 +101,10 @@ func checkDirs(dir string) (*string, error) {
 			return rs, nil
 		}
 
-		if fmode&ModeCharDevice != 0 &&
+		if fmode&os.ModeCharDevice == 0 &&
 			fstat.Ino == Stat.Ino &&
 			fstat.Rdev == Stat.Rdev {
+			//fmt.Println(name, &name)
 			return &name, nil
 		}
 
@@ -161,6 +141,9 @@ func TtyName(fd uintptr) (*string, error) {
 	// loop over most likely directories
 	for _, v := range searchDevs {
 		name, _ = checkDirs(v)
+		if name != nil {
+			return name, nil
+		}
 	}
 
 	// if we can't find it do full scan of /dev/
