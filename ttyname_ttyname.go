@@ -150,14 +150,14 @@ func TtyName(fd uintptr) (*string, error) {
 
 	// strace of tty stats the return of readlink(/proc/self/fd)
 	// let's do that instead, and fall back on searching /dev/
-	if *name, _ = os.Readlink(proc); name != nil {
+	if ret, _ := os.Readlink(proc); ret != "" {
 		fstat := new(syscall.Stat_t)
-		_ = syscall.Stat(*name, fstat)
+		_ = syscall.Stat(ret, fstat)
 
 		if os.FileMode(fstat.Mode)&os.ModeCharDevice == 0 &&
 			fstat.Ino == Stat.Ino &&
 			fstat.Rdev == Stat.Rdev {
-			return name, nil
+			return &ret, nil
 		}
 	}
 
