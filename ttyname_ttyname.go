@@ -35,7 +35,7 @@ const dev = "/dev"
 var (
 	NotFound   = errors.New("device not found")
 	NotTty     = errors.New("not a tty device")
-	proc       = "/proc/self/fd"
+	proc       = "/proc/self/fd/0"
 	searchDevs = []string{
 		"/dev/pts/",
 		"/dev/console",
