@@ -31,10 +31,8 @@ import (
 	"unsafe"
 )
 
-var (
-	One = int64(1)
-)
-
+// WriteErr is an error reading or writing to a file
+// LockErr is an error locking or unlocking a file
 type UtmpError struct {
 	WriteErr error
 	LockErr  error

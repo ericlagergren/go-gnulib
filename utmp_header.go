@@ -23,16 +23,16 @@ package gnulib
 
 // Values for Utmp.Type field
 const (
-	Empty        = 0 // Record does not contain valid info (formerly known as UT_UNKNOWN on Linux)s
-	RunLevel     = 1 // Change in system run-level (see init(8))s
-	BootTime     = 2 // Time of system boot (in timeVal)s
-	NewTime      = 3 // Time after system clock change (in timeVal)s
-	OldTime      = 4 // Time before system clock change (in timeVal)s
-	InitProcess  = 5 // Process spawned by init(8)s
-	LoginProcess = 6 // Session leader process for user logins
-	UserProcess  = 7 // Normal processs
-	DeadProcess  = 8 // Terminated processs
-	Accounting   = 9 // Not implemented
+	Empty        = iota // Record does not contain valid info (formerly known as UT_UNKNOWN on Linux)s
+	RunLevel            // Change in system run-level (see init(8))s
+	BootTime            // Time of system boot (in timeVal)s
+	NewTime             // Time after system clock change (in timeVal)s
+	OldTime             // Time before system clock change (in timeVal)s
+	InitProcess         // Process spawned by init(8)s
+	LoginProcess        // Session leader process for user logins
+	UserProcess         // Normal processs
+	DeadProcess         // Terminated processs
+	Accounting          // Not implemented
 
 	LineSize = 32
 	NameSize = 32
@@ -53,8 +53,11 @@ const (
 	ReadUserProcess = 2
 )
 
-// These are similar to xalloc(1)
+// Similar to xalloc(1)
+// Both UtmpBuffer and LastLogBuffer are a map of structs for quick access
 type UtmpBuffer map[uint64]*Utmp
+
+// Similar to xalloc(1)
 type LastLogBuffer map[int64]*LastLog
 
 type timeVal struct {
@@ -67,12 +70,14 @@ type exit struct {
 	Exit        int16
 }
 
+// LastLog struct found in <utmp.h> (LASTLOG(5))
 type LastLog struct {
 	Time int32
 	Line [LineSize]byte
 	Host [HostSize]byte
 }
 
+// Utmp struct found in <utmp.h> (UTMP(5))
 type Utmp struct {
 	Type    int16          // Type of record
 	_       int16          // padding because Go doesn't 4-byte align

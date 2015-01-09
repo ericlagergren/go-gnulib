@@ -1,3 +1,24 @@
+/*
+	GNU's UPDWTMP(3) written in Go
+
+	Copyright (C) 2014 Eric Lagergren
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* Written by Eric Lagergren <ericscottlagergren@gmail.com> */
+
 package gnulib
 
 import (
@@ -7,6 +28,7 @@ import (
 	"unsafe"
 )
 
+// Appends structure `u` to the wtmp file
 func UpdWtmp(fi *os.File, lk *syscall.Flock_t, u *Utmp) *UtmpError {
 	su := unsafe.Sizeof(u)
 
@@ -40,6 +62,8 @@ func UpdWtmp(fi *os.File, lk *syscall.Flock_t, u *Utmp) *UtmpError {
 	return nil
 }
 
+// Constructs a struct using `line`, `name` (user), `host`, current time,
+// and current PID. Calls UdpWtmp() to append entry.
 func LogWtmp(fi *os.File, lk *syscall.Flock_t, line, user, host string) *UtmpError {
 	u := new(Utmp)
 	u.Time.GetTimeOfDay()
