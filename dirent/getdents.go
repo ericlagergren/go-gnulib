@@ -5,6 +5,8 @@ import (
 	"os"
 	"syscall"
 	"unsafe"
+
+	"github.com/EricLagerg/go-gnulib/general"
 )
 
 type DirentBuf map[int64]*syscall.Dirent
