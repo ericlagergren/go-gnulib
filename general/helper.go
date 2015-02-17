@@ -1,4 +1,4 @@
-package gen
+package general
 
 // General helper functions
 
