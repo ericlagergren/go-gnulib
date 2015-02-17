@@ -19,7 +19,7 @@
 
 /* Written by Eric Lagergren <ericscottlagergren@gmail.com> */
 
-package gnulib
+package utmp
 
 // Values for Utmp.Type field
 const (

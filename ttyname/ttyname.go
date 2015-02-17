@@ -19,7 +19,7 @@
 
 /* Written by Eric Lagergren */
 
-package gnulib
+package ttyname
 
 import (
 	"errors"
@@ -28,6 +28,8 @@ import (
 	"path"
 	"syscall"
 	"unsafe"
+
+	"github.com/EricLagerg/go-gnulib/dirent"
 )
 
 const dev = "/dev"
@@ -63,7 +65,7 @@ func checkDirs(dir string) (*string, error) {
 	defer fi.Close()
 
 	dirBuf := make(DirentBuf)
-	err = ReadDir(int(fi.Fd()), -1, &dirBuf)
+	err = dirent.ReadDir(int(fi.Fd()), -1, &dirBuf)
 	if err != nil && err != io.EOF {
 		return nil, err
 	}

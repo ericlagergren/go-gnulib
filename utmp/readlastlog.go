@@ -19,7 +19,7 @@
 
 /* Written by Eric Lagergren <ericscottlagergren@gmail.com> */
 
-package gnulib
+package utmp
 
 import (
 	"encoding/binary"

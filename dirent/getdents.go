@@ -1,4 +1,4 @@
-package gnulib
+package dirent
 
 import (
 	"io"
