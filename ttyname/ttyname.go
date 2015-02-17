@@ -77,7 +77,7 @@ func checkDirs(dir string) (*string, error) {
 			continue
 		}
 
-		_ = copy(nameBuf, general.Int8toByte(v.Name[:]))
+		_ = copy(nameBuf, general.Int8ToByte(v.Name[:]))
 		name := path.Join(dir, string(nameBuf[:general.Clen(nameBuf)]))
 
 		// Directories to skip
