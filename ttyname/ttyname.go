@@ -77,7 +77,7 @@ func checkDirs(dir string) (*string, error) {
 		}
 
 		_ = copy(nameBuf, Int8toByte(v.Name[:]))
-		name := path.Join(dir, string(nameBuf[:gen.Clen(nameBuf)]))
+		name := path.Join(dir, string(nameBuf[:general.Clen(nameBuf)]))
 
 		// Directories to skip
 		if name == "/dev/stderr" ||

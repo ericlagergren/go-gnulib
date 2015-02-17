@@ -56,7 +56,7 @@ func (u *Utmp) IsUserProcess() bool {
 // Return stringified version of a username.
 // Trims after first null ([]byte{0}) byte
 func (u *Utmp) ExtractTrimmedName() string {
-	return string(u.User[:gen.Clen(u.User[:])])
+	return string(u.User[:general.Clen(u.User[:])])
 }
 
 // Reads entries from a *tmp file and returns a channel of *Utmps
