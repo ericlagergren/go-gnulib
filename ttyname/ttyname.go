@@ -171,8 +171,7 @@ func TtyName(fd uintptr) (*string, error) {
 
 	// If we can't find it above, do full scan of /dev/
 	if name == nil {
-		name, _ = checkDirs(dev)
-		return name, nil
+		return checkDirs(dev)
 	}
 
 	return nil, NotFound
