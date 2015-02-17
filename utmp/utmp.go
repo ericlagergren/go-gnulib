@@ -204,8 +204,8 @@ func WriteWtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, uty
 
 	name := new(syscall.Utsname)
 	if syscall.Uname(*&name) == nil {
-		// general.Int8toByte65 in gen_helper_funcs.go
-		_ = copy(u.Host[:], general.Int8toByte(name.Release[:]))
+		// general.Int8ToByte65 in gen_helper_funcs.go
+		_ = copy(u.Host[:], general.Int8ToByte(name.Release[:]))
 	}
 
 	err := UpdWtmp(fi, lk, u)
@@ -235,8 +235,8 @@ func WriteUtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, uty
 
 	name := new(syscall.Utsname)
 	if syscall.Uname(*&name) == nil {
-		// general.Int8toByte65 in gen_helper_funcs.go
-		_ = copy(u.Host[:], general.Int8toByte(name.Release[:]))
+		// general.Int8ToByte65 in gen_helper_funcs.go
+		_ = copy(u.Host[:], general.Int8ToByte(name.Release[:]))
 	}
 
 	if utype == DeadProcess {
