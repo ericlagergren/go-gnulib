@@ -26,6 +26,8 @@ import (
 	"io"
 	"os"
 	"syscall"
+
+	"github.com/EricLagerg/go-gnulib/general"
 )
 
 // Determines whether the Utmp entry is desired by the user who asked for
