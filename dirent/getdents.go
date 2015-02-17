@@ -26,13 +26,13 @@ func ParseDir(buf []byte, max int64, db *DirentBuf) (int, int) {
 	for max != 0 && len(buf) > 0 {
 		dirent := (*syscall.Dirent)(unsafe.Pointer(&buf[0]))
 
-		buf = buf[dirent.Reclen:]
+		buf = buf[dirent.Regen.Clen:]
 		if dirent.Ino == 0 {
 			continue
 		}
 
 		b := (*[257]byte)(unsafe.Pointer(&dirent.Name[0]))
-		bn := string(b[0:clen(b[:])])
+		bn := string(b[0:gen.Clen(b[:])])
 		if bn == "." || bn == ".." {
 			continue
 		}
@@ -64,7 +64,7 @@ func ReadDir(fd int, n int64, db *DirentBuf) error {
 		if d.bufp >= d.nbuf {
 			d.bufp = 0
 			var errno error
-			d.nbuf, errno = fixCount(syscall.ReadDirent(fd, d.buf))
+			d.nbuf, errno = gen.FixCount(syscall.ReadDirent(fd, d.buf))
 			if errno != nil {
 				return os.NewSyscallError("readdirent", errno)
 			}
@@ -103,7 +103,7 @@ func main() {
 	if
 
 	for _, v := range db {
-		n := int8ToByte(v.Name)
+		n := Int8toByte(v.Name)
 		fmt.Println(string(n))
 	}
 }*/

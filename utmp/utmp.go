@@ -29,6 +29,8 @@ import (
 	"syscall"
 	"time"
 	"unsafe"
+
+	"github.com/EricLagerg/go-gnulib/general"
 )
 
 // WriteErr is an error reading or writing to a file
@@ -202,8 +204,8 @@ func WriteWtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, uty
 
 	name := new(syscall.Utsname)
 	if syscall.Uname(*&name) == nil {
-		// int8ToByte65 in gen_helper_funcs.go
-		_ = copy(u.Host[:], int8ToByte(name.Release[:]))
+		// gen.Int8toByte65 in gen_helper_funcs.go
+		_ = copy(u.Host[:], gen.Int8toByte(name.Release[:]))
 	}
 
 	err := UpdWtmp(fi, lk, u)
@@ -233,8 +235,8 @@ func WriteUtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, uty
 
 	name := new(syscall.Utsname)
 	if syscall.Uname(*&name) == nil {
-		// int8ToByte65 in gen_helper_funcs.go
-		_ = copy(u.Host[:], int8ToByte(name.Release[:]))
+		// gen.Int8toByte65 in gen_helper_funcs.go
+		_ = copy(u.Host[:], gen.Int8toByte(name.Release[:]))
 	}
 
 	if utype == DeadProcess {
