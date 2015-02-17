@@ -30,6 +30,7 @@ import (
 	"unsafe"
 
 	"github.com/EricLagerg/go-gnulib/dirent"
+	"github.com/EricLagerg/go-gnulib/general"
 )
 
 const dev = "/dev"
@@ -64,7 +65,7 @@ func checkDirs(dir string) (*string, error) {
 	}
 	defer fi.Close()
 
-	dirBuf := make(DirentBuf)
+	dirBuf := make(dirent.DirentBuf)
 	err = dirent.ReadDir(int(fi.Fd()), -1, &dirBuf)
 	if err != nil && err != io.EOF {
 		return nil, err
@@ -76,7 +77,7 @@ func checkDirs(dir string) (*string, error) {
 			continue
 		}
 
-		_ = copy(nameBuf, Int8toByte(v.Name[:]))
+		_ = copy(nameBuf, general.Int8toByte(v.Name[:]))
 		name := path.Join(dir, string(nameBuf[:general.Clen(nameBuf)]))
 
 		// Directories to skip
