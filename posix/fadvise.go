@@ -1,5 +1,10 @@
 package posix
 
+import (
+	"os"
+	"syscall"
+)
+
 const (
 	POSIX_FADV_NORMAL = iota
 	POSIX_FADV_RANDOM
