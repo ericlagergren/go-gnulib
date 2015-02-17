@@ -26,7 +26,7 @@ func ParseDir(buf []byte, max int64, db *DirentBuf) (int, int) {
 	for max != 0 && len(buf) > 0 {
 		dirent := (*syscall.Dirent)(unsafe.Pointer(&buf[0]))
 
-		buf = buf[dirent.Regen.Clen:]
+		buf = buf[dirent.Reclen:]
 		if dirent.Ino == 0 {
 			continue
 		}
