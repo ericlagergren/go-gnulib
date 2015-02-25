@@ -153,7 +153,7 @@ func TtyName(fd uintptr) (*string, error) {
 		return nil, NotTty
 	}
 
-	// strace of tty stats the return of readlink(/proc/self/fd)
+	// strace of GNU's tty stats the return of readlink(/proc/self/fd)
 	// let's do that instead, and fall back on searching /dev/
 	if ret, _ := os.Readlink(proc); ret != "" {
 		fstat := new(syscall.Stat_t)
