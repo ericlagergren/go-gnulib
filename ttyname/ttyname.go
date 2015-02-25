@@ -86,8 +86,8 @@ func checkDirs(dir string) (*string, error) {
 		if name == "/dev/stderr" ||
 			name == "/dev/stdin" ||
 			name == "/dev/stdout" ||
-			len(name) >= 8 &&
-				name[0:8] == "/dev/fd/" {
+			(len(name) >= 8 &&
+				name[0:8] == "/dev/fd/") {
 			continue
 		}
 
