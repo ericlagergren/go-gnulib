@@ -12,7 +12,7 @@ func Clen(n []byte) int {
 	return len(n)
 }
 
-// Convert an sized int8 array to byte slice
+// Convert an int8 slice to byte slice
 // Usage bytes := Int8toByte(arr[:])
 func Int8ToByte(arr []int8) []byte {
 	s := make([]byte, len(arr))

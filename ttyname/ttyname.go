@@ -33,12 +33,14 @@ import (
 	"github.com/EricLagerg/go-gnulib/general"
 )
 
-const dev = "/dev"
+const (
+	dev  = "/dev"
+	proc = "/proc/self/fd/0"
+)
 
 var (
 	NotFound   = errors.New("device not found")
 	NotTty     = errors.New("not a tty device")
-	proc       = "/proc/self/fd/0"
 	searchDevs = []string{
 		"/dev/pts/",
 		"/dev/console",
