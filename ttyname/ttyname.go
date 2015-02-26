@@ -120,8 +120,8 @@ func checkDirs(dir string) (*string, error) {
 	return nil, NotFound
 }
 
-// quick istty check
-func isTty(fd uintptr) bool {
+// quick IsAtty check
+func IsAtty(fd uintptr) bool {
 	var termios syscall.Termios
 
 	_, _, err := syscall.Syscall6(syscall.SYS_IOCTL, fd,
@@ -138,7 +138,7 @@ func TtyName(fd uintptr) (*string, error) {
 	var name *string
 
 	// Does `fd` even describe a terminal? ;)
-	if !isTty(fd) {
+	if !IsAtty(fd) {
 		return nil, NotTty
 	}
 
