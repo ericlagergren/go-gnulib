@@ -1,0 +1,19 @@
+package sysinfo
+
+import "unsafe"
+
+// #include <sys/sysctl.h>
+import "C"
+
+func PhysmemAvail() int64 {
+	var physmem C.uint
+	length := unsafe.Sizef(uintptr(physmem))
+	mib := []int{C.CTL_HW, C.HW_PHYSMEM}
+
+	if C.sysctl(mib, C.ARRAY_SIZE(mib), &physmem, &length, C.NULL, 0) == 0 &&
+		length == unsafe.Sizeof(uintptr(physmem)) {
+		return int64(physmem)
+	}
+
+	return -1
+}
