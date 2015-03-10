@@ -66,7 +66,7 @@ func UpdWtmp(fi *os.File, lk *syscall.Flock_t, u *Utmp) *UtmpError {
 // and current PID. Calls UdpWtmp() to append entry.
 func LogWtmp(fi *os.File, lk *syscall.Flock_t, line, user, host string) *UtmpError {
 	u := new(Utmp)
-	u.Time.GetTimeOfDay()
+	_ = syscall.Gettimeofday(&u.Time)
 	u.Pid = int32(os.Getpid())
 	_ = copy(u.Host[:], []byte(host))
 	_ = copy(u.User[:], []byte(user))

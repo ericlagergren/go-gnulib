@@ -21,6 +21,8 @@
 
 package utmp
 
+import "syscall"
+
 // Values for Utmp.Type field
 const (
 	Empty        = iota // Record does not contain valid info (formerly known as UT_UNKNOWN on Linux)s
@@ -60,11 +62,6 @@ type UtmpBuffer map[uint64]*Utmp
 // Similar to xalloc(1)
 type LastLogBuffer map[int64]*LastLog
 
-type timeVal struct {
-	Sec  int32
-	Usec int32
-}
-
 type exit struct {
 	Termination int16
 	Exit        int16
@@ -79,16 +76,16 @@ type LastLog struct {
 
 // Utmp struct found in <utmp.h> (UTMP(5))
 type Utmp struct {
-	Type    int16          // Type of record
-	_       int16          // padding because Go doesn't 4-byte align
-	Pid     int32          // PID of login process
-	Line    [LineSize]byte // Device name of tty - "/dev/"
-	Id      [4]byte        // Terminal name suffix or inittab(5) ID
-	User    [NameSize]byte // Username
-	Host    [HostSize]byte // Hostname for remote login or kernel version for run-level messages
-	Exit    exit           // Exit status of a process marked as DeadProcess; not used by Linux init(1)
-	Session int32          // Session ID (getsid(2)), used for windowing
-	Time    timeVal        // Time entry was made
-	Addr    [4]int32       // Internet address of remote host; IPv4 address uses just Addr[0]
-	Unused  [20]byte       // Reserved for future use
+	Type    int16           // Type of record
+	_       int16           // padding because Go doesn't 4-byte align
+	Pid     int32           // PID of login process
+	Line    [LineSize]byte  // Device name of tty - "/dev/"
+	Id      [4]byte         // Terminal name suffix or inittab(5) ID
+	User    [NameSize]byte  // Username
+	Host    [HostSize]byte  // Hostname for remote login or kernel version for run-level messages
+	Exit    exit            // Exit status of a process marked as DeadProcess; not used by Linux init(1)
+	Session int32           // Session ID (getsid(2)), used for windowing
+	Time    syscall.Timeval // Time entry was made
+	Addr    [4]int32        // Internet address of remote host; IPv4 address uses just Addr[0]
+	Unused  [20]byte        // Reserved for future use
 }

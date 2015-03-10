@@ -25,9 +25,7 @@ import (
 	"encoding/binary"
 	"io"
 	"os"
-	"os/signal"
 	"syscall"
-	"time"
 	"unsafe"
 
 	"github.com/EricLagerg/go-gnulib/general"
@@ -38,13 +36,6 @@ import (
 type UtmpError struct {
 	WriteErr error
 	LockErr  error
-}
-
-// Similar to glibc's gettimeofday()
-func (t *timeVal) GetTimeOfDay() {
-	now := time.Now().Unix()
-	t.Usec = int32(now / 1000)
-	t.Sec = int32(now)
 }
 
 // A wrapper around os.OpenFile() that locks the file after opening
@@ -70,23 +61,6 @@ func SafeOpen(name string, flag int, perm os.FileMode) (*os.File, *syscall.Flock
 	if err != nil {
 		return nil, nil, &UtmpError{nil, err}
 	}
-
-	// Catch signals in case a terminating signal is sent before
-	// we have a chance to unlock the file
-	go func() {
-		c := make(chan os.Signal, 1)
-		signal.Notify(c,
-			syscall.SIGTERM,
-			syscall.SIGHUP,
-			syscall.SIGQUIT,
-			syscall.SIGINT)
-		<-c
-
-		lk.Type = syscall.F_UNLCK
-		// We need to exit ASAPm so if the fcntl unlock fails exit anyway
-		_ = syscall.FcntlFlock(fi.Fd(), syscall.F_SETLK, &lk)
-		os.Exit(1)
-	}()
 
 	return fi, &lk, nil
 }
@@ -195,7 +169,7 @@ Time:
 func WriteWtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, utype int16, line string) *UtmpError {
 
 	u := new(Utmp)
-	u.Time.GetTimeOfDay()
+	_ = syscall.Gettimeofday(&u.Time)
 	u.Pid = pid
 	u.Type = utype
 	_ = copy(u.User[:], []byte(user))
@@ -226,7 +200,7 @@ func WriteWtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, uty
 func WriteUtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, utype int16, line, oldline string) *UtmpError {
 
 	u := new(Utmp)
-	u.Time.GetTimeOfDay()
+	_ = syscall.Gettimeofday(&u.Time)
 	u.Pid = pid
 	u.Type = utype
 	_ = copy(u.User[:], []byte(user))
