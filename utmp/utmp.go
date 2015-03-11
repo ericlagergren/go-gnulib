@@ -26,6 +26,7 @@ import (
 	"io"
 	"os"
 	"syscall"
+	"time"
 	"unsafe"
 
 	"github.com/EricLagerg/go-gnulib/general"
@@ -36,6 +37,13 @@ import (
 type UtmpError struct {
 	WriteErr error
 	LockErr  error
+}
+
+// Similar to glibc's Gettimeofday()
+func (t *timeVal) GetTimeOfDay() {
+	now := time.Now().Unix()
+	t.Usec = int32(now / 1000)
+	t.Sec = int32(now)
 }
 
 // A wrapper around os.OpenFile() that locks the file after opening
@@ -169,7 +177,7 @@ Time:
 func WriteWtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, utype int16, line string) *UtmpError {
 
 	u := new(Utmp)
-	_ = syscall.Gettimeofday(&u.Time)
+	u.Time.GetTimeOfDay()
 	u.Pid = pid
 	u.Type = utype
 	_ = copy(u.User[:], []byte(user))
@@ -200,7 +208,7 @@ func WriteWtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, uty
 func WriteUtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, utype int16, line, oldline string) *UtmpError {
 
 	u := new(Utmp)
-	_ = syscall.Gettimeofday(&u.Time)
+	u.Time.GetTimeOfDay()
 	u.Pid = pid
 	u.Type = utype
 	_ = copy(u.User[:], []byte(user))

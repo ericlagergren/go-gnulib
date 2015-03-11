@@ -61,7 +61,7 @@ func (u *Utmp) ExtractTrimmedName() string {
 	return string(u.User[:general.Clen(u.User[:])])
 }
 
-// Reads entries from a *tmp file and returns a channel of *Utmps
+// Reads entries from a *tmp file into a UtmpBuffer, us
 // Returns an error if any reads fail without EOF, else nil
 func ReadUtmp(fname string, entries uint64, us *UtmpBuffer, opts int) error {
 	var e error
@@ -72,10 +72,6 @@ func ReadUtmp(fname string, entries uint64, us *UtmpBuffer, opts int) error {
 	}
 	defer fi.Close()
 
-	if entries == 0 {
-		// Max unsigned int, so basically never ending
-		entries = uint64(^(uint(0) >> 1))
-	}
 	i := uint64(0)
 	for {
 		u := new(Utmp)
@@ -83,7 +79,7 @@ func ReadUtmp(fname string, entries uint64, us *UtmpBuffer, opts int) error {
 		err = binary.Read(fi, binary.LittleEndian, u)
 		if err != nil && err != io.EOF {
 			e = err
-			break
+			//break
 		}
 		if err == io.EOF {
 			break
@@ -93,7 +89,7 @@ func ReadUtmp(fname string, entries uint64, us *UtmpBuffer, opts int) error {
 			(*us)[i] = u
 			i++
 		}
-		if i == entries {
+		if i == entries && i > 0 {
 			break
 		}
 	}
