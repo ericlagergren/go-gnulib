@@ -6,6 +6,8 @@ import (
 	"syscall"
 )
 
+// DONTNEED and NOREUSE differ on s390x
+// http://lxr.free-electrons.com/source/include/uapi/linux/fadvise.h#L14
 const (
 	FADVISE_NORMAL     = 0x0
 	FADVISE_RANDOM     = 0x1
