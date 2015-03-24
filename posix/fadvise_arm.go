@@ -15,6 +15,8 @@ const (
 	FADVISE_NOREUSE    = 0x5
 )
 
+// ARM64 requires arguments to be realigned.
+// http://linux.die.net/man/2/posix_fadvise
 func Fadvise64(fd int, advice int64, offset int64, length int) error {
 	_, _, errno := syscall.Syscall6(syscall.SYS_FADVISE64,
 		uintptr(fd),
