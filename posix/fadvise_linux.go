@@ -13,10 +13,10 @@ const (
 	FADVISE_NOREUSE    = 0x5
 )
 
-func Fadvise64(fd int, off int, length int, advice uint32) error {
+func Fadvise64(fd int, offset int64, length int64, advice int) error {
 	_, _, errno := syscall.Syscall6(syscall.SYS_FADVISE64,
 		uintptr(fd),
-		uintptr(off),
+		uintptr(offset),
 		uintptr(length),
 		uintptr(advice), 0, 0)
 	if errno != 0 {
