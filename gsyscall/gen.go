@@ -1,4 +1,4 @@
-package _syscall
+package gsyscall
 
 var (
 	errEAGAIN error = syscall.EAGAIN

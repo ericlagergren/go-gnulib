@@ -1,4 +1,4 @@
-package _syscall
+package gsyscall
 
 import (
 	"os"
