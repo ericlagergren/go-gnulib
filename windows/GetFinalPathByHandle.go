@@ -40,7 +40,7 @@ func GetFinalPathNameByHandleA(handle syscall.Handle, buf []byte, flags int) err
 func GetFinalPathNameByHandleW(handle syscall.Handle, buf []uint16, flags int) (int, error) {
 	size := len(buf)
 
-	var p *byte
+	var p *uint16
 	if size > 0 {
 		p = &buf[0]
 	}
