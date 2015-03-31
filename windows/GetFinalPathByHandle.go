@@ -1,7 +1,6 @@
 package k32
 
 import (
-	"os"
 	"syscall"
 	"unsafe"
 )
