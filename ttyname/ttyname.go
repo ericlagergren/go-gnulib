@@ -55,22 +55,22 @@ var (
 // recursively walk through the named directory `dir` until the correct device
 // is found.
 // Directories in []searchDevs are automatically skipped
-func checkDirs(dir string) (*string, error) {
+func checkDirs(dir string) (string, error) {
 	var (
-		rs      *string
+		rs      string
 		nameBuf = make([]byte, 256)
 	)
 
 	fi, err := os.Open(dir)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	defer fi.Close()
 
 	dirBuf := make(dirent.DirentBuf)
 	err = dirent.ReadDir(int(fi.Fd()), -1, &dirBuf)
 	if err != nil && err != io.EOF {
-		return nil, err
+		return "", err
 	}
 
 	for _, v := range dirBuf {
@@ -112,12 +112,12 @@ func checkDirs(dir string) (*string, error) {
 		if fmode&os.ModeCharDevice == 0 &&
 			fstat.Ino == Stat.Ino &&
 			fstat.Rdev == Stat.Rdev {
-			return &name, nil
+			return name, nil
 		}
 
 	}
 
-	return nil, NotFound
+	return "", NotFound
 }
 
 // quick IsAtty check
@@ -134,23 +134,23 @@ func IsAtty(fd uintptr) bool {
 }
 
 // Returns a pointer to a string from a uintptr describing a file descriptor
-func TtyName(fd uintptr) (*string, error) {
-	var name *string
+func TtyName(fd uintptr) (string, error) {
+	var name string
 
 	// Does `fd` even describe a terminal? ;)
 	if !IsAtty(fd) {
-		return nil, NotTty
+		return "", NotTty
 	}
 
 	// Gather inode and rdev info about fd
 	err := syscall.Fstat(int(fd), Stat)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	// Needs to be a character device
 	if os.FileMode(Stat.Mode)&os.ModeCharDevice != 0 {
-		return nil, NotTty
+		return "", NotTty
 	}
 
 	// strace of GNU's tty stats the return of readlink(/proc/self/fd)
@@ -162,22 +162,22 @@ func TtyName(fd uintptr) (*string, error) {
 		if os.FileMode(fstat.Mode)&os.ModeCharDevice == 0 &&
 			fstat.Ino == Stat.Ino &&
 			fstat.Rdev == Stat.Rdev {
-			return &ret, nil
+			return ret, nil
 		}
 	}
 
 	// Loop over most likely directories second
 	for _, v := range searchDevs {
 		name, _ = checkDirs(v)
-		if name != nil {
+		if name != "" {
 			return name, nil
 		}
 	}
 
 	// If we can't find it above, do full scan of /dev/
-	if name == nil {
+	if name == "" {
 		return checkDirs(dev)
 	}
 
-	return nil, NotFound
+	return "", NotFound
 }
