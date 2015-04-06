@@ -1,7 +1,6 @@
 package k32
 
 import (
-	"fmt"
 	"syscall"
 	"unsafe"
 )
@@ -53,4 +52,3 @@ func GetConsoleTitleW(buf []uint16) (int, error) {
 
 	return int(length), nil
 }
-
