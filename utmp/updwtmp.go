@@ -1,7 +1,7 @@
 /*
 	GNU's UPDWTMP(3) written in Go
 
-	Copyright (C) 2014 Eric Lagergren
+	Copyright (C) 2015 Eric Lagergren
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -38,6 +38,7 @@ func UpdWtmp(fi *os.File, lk *syscall.Flock_t, u *Utmp) *UtmpError {
 		Unlock(fi, lk)
 		return &UtmpError{err, nil}
 	}
+
 	// If we can't write safely rewind the file and exit
 	if sz%int64(su) != 0 {
 		sz -= int64(su)

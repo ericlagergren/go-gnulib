@@ -9,8 +9,6 @@ import (
 	"github.com/EricLagerg/go-gnulib/general"
 )
 
-type DirentBuf map[int64]*syscall.Dirent
-
 // Because os' dirInfo isn't exported
 type dirInfo struct {
 	buf  []byte // buffer for directory I/O
@@ -21,12 +19,12 @@ type dirInfo struct {
 // Read a buffer (dir) into the pointer to the DirentBuf, `db`
 // Returns remaining buffer size and number of entries created
 // It's a modified version of syscall.ParseDirent in Go's standard library
-func ParseDir(buf []byte, max int64, db *DirentBuf) (int, int) {
+func ParseDir(buf []byte, max int64, db *[]syscall.Dirent) (int, int) {
 	orig := len(buf)
 
 	i := int64(0)
 	for max != 0 && len(buf) > 0 {
-		dirent := (*syscall.Dirent)(unsafe.Pointer(&buf[0]))
+		dirent := *(*syscall.Dirent)(unsafe.Pointer(&buf[0]))
 
 		buf = buf[dirent.Reclen:]
 		if dirent.Ino == 0 {
@@ -39,7 +37,12 @@ func ParseDir(buf []byte, max int64, db *DirentBuf) (int, int) {
 			continue
 		}
 
-		(*db)[i] = dirent
+		if len(*db) <= int(i) {
+			*db = append(*db, dirent)
+		} else {
+			(*db)[i] = dirent
+		}
+
 		max--
 		i++
 	}
@@ -51,7 +54,7 @@ func ParseDir(buf []byte, max int64, db *DirentBuf) (int, int) {
 // Returns error EOF when the directory has been walked; returns "readdirent"
 // error if unable to perform a ReadDirent() syscall
 // It's a modified version of (os) readdirnames() in Go's standard library
-func ReadDir(fd int, n int64, db *DirentBuf) error {
+func ReadDir(fd int, n int64, db *[]syscall.Dirent) error {
 	d := new(dirInfo)
 	d.buf = make([]byte, 4096)
 
@@ -96,7 +99,8 @@ func main() {
 	}
 	defer fi.Close()
 
-	db := make(DirentBuf)
+	n := // how ever many you think you'll need
+	db := make([]syscall.Dirent, n)
 	err = ReadDir(int(fi.Fd()), -1, &db)
 	if err != nil && err != io.EOF {
 		// handle err
@@ -105,7 +109,7 @@ func main() {
 	if
 
 	for _, v := range db {
-		n := Int8toByte(v.Name)
+		n := general.Int8toByte(v.Name)
 		fmt.Println(string(n))
 	}
 }*/

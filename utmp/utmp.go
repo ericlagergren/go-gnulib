@@ -1,7 +1,7 @@
 /*
 	GNU's utmp.c written in Go
 
-	Copyright (C) 2014 Eric Lagergren
+	Copyright (C) 2015 Eric Lagergren
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -186,7 +186,6 @@ func WriteWtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, uty
 
 	name := new(syscall.Utsname)
 	if syscall.Uname(*&name) == nil {
-		// general.Int8ToByte65 in gen_helper_funcs.go
 		_ = copy(u.Host[:], general.Int8ToByte(name.Release[:]))
 	}
 

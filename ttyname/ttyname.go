@@ -59,6 +59,7 @@ func checkDirs(dir string) (string, error) {
 	var (
 		rs      string
 		nameBuf = make([]byte, 256)
+		dirBuf  = make([]syscall.Dirent, 256)
 	)
 
 	fi, err := os.Open(dir)
@@ -67,7 +68,6 @@ func checkDirs(dir string) (string, error) {
 	}
 	defer fi.Close()
 
-	dirBuf := make(dirent.DirentBuf)
 	err = dirent.ReadDir(int(fi.Fd()), -1, &dirBuf)
 	if err != nil && err != io.EOF {
 		return "", err

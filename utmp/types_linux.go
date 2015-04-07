@@ -1,7 +1,7 @@
 /*
-	UTMP(5) header file
+	UTMP(5) types (header) file. Covers most utmp/wtmp functions.
 
-	Copyright (C) 2014 Eric Lagergren
+	Copyright (C) 2015 Eric Lagergren
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -21,63 +21,68 @@
 
 package utmp
 
+// #include <utmp.h>
+// #include <lastlog.h>
+import "C"
+
 // Values for Utmp.Type field
 const (
-	Empty        = iota // Record does not contain valid info (formerly known as UT_UNKNOWN on Linux)s
-	RunLevel            // Change in system run-level (see init(8))s
-	BootTime            // Time of system boot (in timeVal)s
-	NewTime             // Time after system clock change (in timeVal)s
-	OldTime             // Time before system clock change (in timeVal)s
-	InitProcess         // Process spawned by init(8)s
-	LoginProcess        // Session leader process for user logins
-	UserProcess         // Normal processs
-	DeadProcess         // Terminated processs
-	Accounting          // Not implemented
+	Empty        = C.EMPTY         // Record does not contain valid info (formerly known as UT_UNKNOWN on Linux)s
+	RunLevel     = C.RUN_LVL       // Change in system run-level (see init(8))s
+	BootTime     = C.BOOT_TIME     // Time of system boot (in timeVal)s
+	NewTime      = C.NEW_TIME      // Time after system clock change (in timeVal)s
+	OldTime      = C.OLD_TIME      // Time before system clock change (in timeVal)s
+	InitProcess  = C.INIT_PROCESS  // Process spawned by init(8)s
+	LoginProcess = C.LOGIN_PROCESS // Session leader process for user logins
+	UserProcess  = C.USER_PROCESS  // Normal processs
+	DeadProcess  = C.DEAD_PROCESS  // Terminated processs
+	Accounting   = C.ACCOUNTING    // Not implemented
+	Unknown      = C.EMPTY         // Old Linux name for Empty
 
-	LineSize = 32
-	NameSize = 32
-	HostSize = 256
+	LineSize = C.UT_LINESIZE
+	NameSize = C.UT_NAMESIZE
+	HostSize = C.UT_HOSTSIZE
 )
 
 // utmp, wtmp, btmp, and lastlog file names
 const (
-	UtmpFile    = "/var/run/utmp"
-	WtmpFile    = "/var/log/wtmp"
-	BtmpFile    = "/var/log/btmp"
-	LastLogFile = "/var/log/LastLog"
+	UtmpFile     = C._PATH_UTMP
+	UtmpFileName = UtmpFile
+	WtmpFile     = C._PATH_WTMP
+	WtmpFileName = WtmpFile
+
+	BtmpFile        = "/var/log/btmp"
+	BtmpFileName    = BtmpFile
+	LastLogFile     = "/var/log/LastLog"
+	LastLogFileName = LastLogFile
 )
 
-// Opts for ReadUtmp()
+// Options for ReadUtmp
 const (
 	CheckPIDs       = 1
 	ReadUserProcess = 2
 )
 
-// Similar to xalloc(1)
-// Both UtmpBuffer and LastLogBuffer are a map of structs for quick access
-type UtmpBuffer map[uint64]*Utmp
-
-// Similar to xalloc(1)
-type LastLogBuffer map[int64]*LastLog
-
+// Structure describing the status of a terminated process.
 type exit struct {
 	Termination int16
 	Exit        int16
 }
 
+// Not using syscall because int64s mess up our binary reads
 type timeVal struct {
 	Sec  int32
 	Usec int32
 }
 
-// LastLog struct found in <utmp.h> (LASTLOG(5))
+// The structure describing an entry in the database of prvious logins
 type LastLog struct {
 	Time int32
 	Line [LineSize]byte
 	Host [HostSize]byte
 }
 
-// Utmp struct found in <utmp.h> (UTMP(5))
+// The structure describing an entry in the user accounting database
 type Utmp struct {
 	Type    int16          // Type of record
 	_       int16          // padding because Go doesn't 4-byte align

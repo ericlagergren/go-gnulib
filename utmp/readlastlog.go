@@ -1,7 +1,7 @@
 /*
 	Read a lastlog file into a buffer
 
-	Copyright (C) 2014 Eric Lagergren
+	Copyright (C) 2015 Eric Lagergren
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -29,30 +29,39 @@ import (
 
 // Reads entries from a lastlog file into the LastLogBuffer specified by `ls`
 // Returns an error if any reads fail without EOF
-func ReadLastLog(entries *int64, ls *LastLogBuffer) error {
+func ReadLastLog(entries *uint64, ls *[]LastLog) error {
+	var e error
+
 	fi, err := os.OpenFile(LastLogFile, os.O_RDONLY, os.ModeExclusive)
 	if err != nil {
 		return err
 	}
 	defer fi.Close()
 
-	i := int64(0)
+	i := uint64(0)
 	for {
-		l := new(LastLog)
+		var l LastLog
 
-		err = binary.Read(fi, binary.LittleEndian, l)
+		err = binary.Read(fi, binary.LittleEndian, &l)
 		if err != nil && err != io.EOF {
-			return err
+			e = err
 		}
 		if err == io.EOF {
 			break
 		}
 
-		(*ls)[i] = l
+		if len(*ls) <= int(i) {
+			*ls = append(*ls, l)
+		} else {
+			(*ls)[i] = l
+		}
 		i++
-		if &i == entries {
+
+		if i == *entries && i > 0 {
 			break
 		}
 	}
-	return nil
+	*entries = i
+
+	return e
 }

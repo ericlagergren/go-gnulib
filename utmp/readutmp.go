@@ -1,7 +1,7 @@
 /*
 	GNU's readutmp.c written in Go
 
-	Copyright (C) 2014 Eric Lagergren
+	Copyright (C) 2015 Eric Lagergren
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -56,14 +56,22 @@ func (u *Utmp) IsUserProcess() bool {
 }
 
 // Return stringified version of a username.
-// Trims after first null ([]byte{0}) byte
+// Trims after first null byte
 func (u *Utmp) ExtractTrimmedName() string {
 	return string(u.User[:general.Clen(u.User[:])])
 }
 
-// Reads entries from a *tmp file into a UtmpBuffer, us
+// Reads entries from a Utmp file into a UtmpBuffer, us
 // Returns an error if any reads fail without EOF, else nil
-func ReadUtmp(fname string, entries uint64, us *UtmpBuffer, opts int) error {
+//
+// This differs from GNU's because it assigns to the slice US even if
+// an error is found.
+//
+// ReadUtmp asks for a pointer to a slice because if US is smaller than
+// entries, we change the pointer and grow the slice as needed. This is
+// generally the same speed as maps for smaller number of entries; for
+// entries over 10,000 or so maps' speed plummets.
+func ReadUtmp(fname string, entries *uint64, us *[]Utmp, opts int) error {
 	var e error
 
 	fi, err := os.OpenFile(fname, os.O_RDONLY, os.ModeExclusive)
@@ -74,24 +82,32 @@ func ReadUtmp(fname string, entries uint64, us *UtmpBuffer, opts int) error {
 
 	i := uint64(0)
 	for {
-		u := new(Utmp)
+		var u Utmp
 
-		err = binary.Read(fi, binary.LittleEndian, u)
+		err = binary.Read(fi, binary.LittleEndian, &u)
 		if err != nil && err != io.EOF {
 			e = err
-			//break
 		}
 		if err == io.EOF {
 			break
 		}
 
 		if u.isDesirable(opts) {
-			(*us)[i] = u
+			// Grow if needed
+			if len(*us) <= int(i) {
+				*us = append(*us, u)
+			} else {
+				(*us)[i] = u
+			}
+
 			i++
 		}
-		if i == entries && i > 0 {
+
+		if i == *entries && i > 0 {
 			break
 		}
 	}
+	*entries = i
+
 	return e
 }
