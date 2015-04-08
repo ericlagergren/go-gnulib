@@ -43,7 +43,7 @@ func (t *timeVal) GetTimeOfDay() {
 // Returns a pointer to the open fd, the lock struct, and an error/nil
 func SafeOpen(name string) (*os.File, *syscall.Flock_t, error) {
 
-	fi, err := os.OpenFile(UtmpFile, os.O_RDWR, os.ModeExclusive)
+	fi, err := os.OpenFile(name, os.O_RDWR, os.ModeExclusive)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -66,8 +66,8 @@ func SafeOpen(name string) (*os.File, *syscall.Flock_t, error) {
 }
 
 // Unlocks the file and then closes it
-func SafeClose(fi *os.File, lk *syscall.Flock_t) error {
-	Unlock(fi, lk)
+func SafeClose(file *os.File, lk *syscall.Flock_t) error {
+	Unlock(file, lk)
 	err := fi.Close()
 	if err != nil {
 		return err
@@ -76,14 +76,14 @@ func SafeClose(fi *os.File, lk *syscall.Flock_t) error {
 }
 
 // Unlock open file
-func Unlock(fi *os.File, lk *syscall.Flock_t) {
+func Unlock(file *os.File, lk *syscall.Flock_t) {
 	lk.Type = syscall.F_ULOCK
-	_ = syscall.FcntlFlock(fi.Fd(), syscall.F_SETLK, lk)
+	_ = syscall.FcntlFlock(file.Fd(), syscall.F_SETLK, lk)
 }
 
 // Rewind to beginning of file
-func SetUtEnd(fi *os.File) error {
-	_, err := fi.Seek(0, os.SEEK_SET)
+func SetUtEnd(file *os.File) error {
+	_, err := file.Seek(0, os.SEEK_SET)
 	if err != nil {
 		return err
 	}
@@ -92,7 +92,7 @@ func SetUtEnd(fi *os.File) error {
 
 // Searches forward from point in file and finds the correct entry based on id
 // Returns -1 if no appropriate entry is found
-func GetUtid(fi *os.File, id *Utmp) (int64, *Utmp) {
+func GetUtid(file *os.File, id *Utmp) (int64, *Utmp) {
 	var i int64
 
 	// I do this because
@@ -128,7 +128,7 @@ Process:
 	for {
 		u := new(Utmp)
 
-		err := binary.Read(fi, binary.LittleEndian, u)
+		err := binary.Read(file, binary.LittleEndian, u)
 		if err != nil && err != io.EOF {
 			break
 		}
@@ -147,7 +147,7 @@ Time:
 	for {
 		u := new(Utmp)
 
-		err := binary.Read(fi, binary.LittleEndian, u)
+		err := binary.Read(file, binary.LittleEndian, u)
 		if err != nil && err != io.EOF {
 			break
 		}
@@ -166,7 +166,7 @@ Time:
 
 // Write to a wtmp file.
 // On error returns a pointer to a error struct, else nil
-func WriteWtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, utype int16, line string) error {
+func WriteWtmp(file *os.File, lk *syscall.Flock_t, user, id string, pid int32, utype int16, line string) error {
 
 	u := new(Utmp)
 	u.Time.GetTimeOfDay()
@@ -181,12 +181,12 @@ func WriteWtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, uty
 		_ = copy(u.Host[:], general.Int8ToByte(name.Release[:]))
 	}
 
-	err := UpdWtmp(fi, lk, u)
+	err := UpdWtmp(file, lk, u)
 	if err != nil {
 		return err
 	}
 
-	e := SafeClose(fi, lk)
+	e := SafeClose(file, lk)
 	if e != nil {
 		return err
 	}
@@ -238,7 +238,7 @@ func WriteUtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, uty
 	return nil
 }
 
-// Writes to UtmpFile at fi's current position, else append
+// Writes to name at fi's current position, else append
 func (u *Utmp) PutUtLine(fi *os.File, lk *syscall.Flock_t) error {
 	su := unsafe.Sizeof(u)
 
