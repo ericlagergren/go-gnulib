@@ -1,3 +1,5 @@
+// +build windows
+
 package k32
 
 import (

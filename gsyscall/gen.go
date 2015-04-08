@@ -1,5 +1,7 @@
 package gsyscall
 
+import "syscall"
+
 var (
 	errEAGAIN error = syscall.EAGAIN
 	errEINVAL error = syscall.EINVAL

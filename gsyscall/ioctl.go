@@ -1,7 +1,6 @@
 package gsyscall
 
 import (
-	"os"
 	"syscall"
 	"unsafe"
 )

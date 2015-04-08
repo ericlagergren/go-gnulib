@@ -32,13 +32,6 @@ import (
 	"github.com/EricLagerg/go-gnulib/general"
 )
 
-// WriteErr is an error reading or writing to a file
-// LockErr is an error locking or unlocking a file
-type UtmpError struct {
-	WriteErr error
-	LockErr  error
-}
-
 // Similar to glibc's Gettimeofday()
 func (t *timeVal) GetTimeOfDay() {
 	now := time.Now().Unix()
@@ -48,18 +41,17 @@ func (t *timeVal) GetTimeOfDay() {
 
 // A wrapper around os.OpenFile() that locks the file after opening
 // Returns a pointer to the open fd, the lock struct, and an error/nil
-func SafeOpen(name string, flag int, perm os.FileMode) (*os.File, *syscall.Flock_t, *UtmpError) {
+func SafeOpen(name string, flag int, perm os.FileMode) (*os.File, *syscall.Flock_t, error) {
 
 	fi, err := os.OpenFile(UtmpFile, os.O_RDWR, os.ModeExclusive)
 	if err != nil {
-		return nil, nil, &UtmpError{err, nil}
+		return nil, nil, err
 	}
-	//defer fi.Close()
 
 	// Lock the file so we're responsible
 	lk := syscall.Flock_t{
 		Type:   syscall.F_WRLCK,    // set write lock
-		Whence: 0,                  // SEEK_SET
+		Whence: os.SEEK_SET,        // set to offset
 		Start:  0,                  // beginning of file
 		Len:    0,                  // until EOF
 		Pid:    int32(os.Getpid()), // our PID
@@ -67,7 +59,7 @@ func SafeOpen(name string, flag int, perm os.FileMode) (*os.File, *syscall.Flock
 	err = syscall.FcntlFlock(fi.Fd(), syscall.F_SETLKW, &lk)
 	// If we can't lock the file error out to prevent corruption
 	if err != nil {
-		return nil, nil, &UtmpError{nil, err}
+		return nil, nil, err
 	}
 
 	return fi, &lk, nil
@@ -174,7 +166,7 @@ Time:
 
 // Write to a wtmp file.
 // On error returns a pointer to a UtmpError struct, else nil
-func WriteWtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, utype int16, line string) *UtmpError {
+func WriteWtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, utype int16, line string) error {
 
 	u := new(Utmp)
 	u.Time.GetTimeOfDay()
@@ -191,12 +183,12 @@ func WriteWtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, uty
 
 	err := UpdWtmp(fi, lk, u)
 	if err != nil {
-		return &UtmpError{err.WriteErr, nil}
+		return err
 	}
 
 	e := SafeClose(fi, lk)
 	if e != nil {
-		return &UtmpError{nil, e}
+		return err
 	}
 
 	return nil
@@ -204,7 +196,7 @@ func WriteWtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, uty
 
 // Write to a utmp file.
 // On error returns a pointer to a UtmpError struct, else nil
-func WriteUtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, utype int16, line, oldline string) *UtmpError {
+func WriteUtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, utype int16, line, oldline string) error {
 
 	u := new(Utmp)
 	u.Time.GetTimeOfDay()
@@ -231,23 +223,23 @@ func WriteUtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, uty
 
 	err := SetUtEnd(fi)
 	if err != nil {
-		return &UtmpError{err, nil}
+		return err
 	}
 
 	if err := u.PutUtLine(fi, lk); err != nil {
-		return &UtmpError{err.WriteErr, nil}
+		return err
 	}
 
 	err = SafeClose(fi, lk)
 	if err != nil {
-		return &UtmpError{nil, err}
+		return err
 	}
 
 	return nil
 }
 
 // Writes to UtmpFile at fi's current position, else append
-func (u *Utmp) PutUtLine(fi *os.File, lk *syscall.Flock_t) *UtmpError {
+func (u *Utmp) PutUtLine(fi *os.File, lk *syscall.Flock_t) error {
 	su := unsafe.Sizeof(u)
 
 	// Save current position
@@ -257,7 +249,7 @@ func (u *Utmp) PutUtLine(fi *os.File, lk *syscall.Flock_t) *UtmpError {
 	if err != nil {
 		// Cannot safely get file size in order to write
 		Unlock(fi, lk)
-		return &UtmpError{err, nil}
+		return err
 	}
 	// If we can't write safely rewind the file and exit
 	if sz%int64(su) != 0 {
@@ -265,7 +257,7 @@ func (u *Utmp) PutUtLine(fi *os.File, lk *syscall.Flock_t) *UtmpError {
 		err = syscall.Ftruncate(int(fi.Fd()), sz)
 		if err != nil {
 			Unlock(fi, lk)
-			return &UtmpError{err, nil}
+			return err
 		}
 	}
 
@@ -275,13 +267,13 @@ func (u *Utmp) PutUtLine(fi *os.File, lk *syscall.Flock_t) *UtmpError {
 	_, err = fi.Seek(cur, os.SEEK_SET)
 	if err != nil {
 		Unlock(fi, lk)
-		return &UtmpError{err, nil}
+		return err
 	}
 
 	err = binary.Write(fi, binary.LittleEndian, &u)
 	if err != nil {
 		Unlock(fi, lk)
-		return &UtmpError{err, nil}
+		return err
 	}
 
 	return nil
