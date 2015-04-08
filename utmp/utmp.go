@@ -41,7 +41,7 @@ func (t *timeVal) GetTimeOfDay() {
 
 // A wrapper around os.OpenFile() that locks the file after opening
 // Returns a pointer to the open fd, the lock struct, and an error/nil
-func SafeOpen(name string, flag int, perm os.FileMode) (*os.File, *syscall.Flock_t, error) {
+func SafeOpen(name string) (*os.File, *syscall.Flock_t, error) {
 
 	fi, err := os.OpenFile(UtmpFile, os.O_RDWR, os.ModeExclusive)
 	if err != nil {
