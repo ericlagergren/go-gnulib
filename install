@@ -1,8 +1,8 @@
-go get github.com/EricLagerg/go-gnulib/dirent
-go get github.com/EricLagerg/go-gnulib/general
-go get github.com/EricLagerg/go-gnulib/gsyscall
-go get github.com/EricLagerg/go-gnulib/posix
-go get github.com/EricLagerg/go-gnulib/sysinfo
-go get github.com/EricLagerg/go-gnulib/ttyname
-go get github.com/EricLagerg/go-gnulib/utmp
-go get github.com/EricLagerg/go-gnulib/windows
+go get -u github.com/EricLagerg/go-gnulib/dirent
+go get -u github.com/EricLagerg/go-gnulib/general
+go get -u github.com/EricLagerg/go-gnulib/gsyscall
+go get -u github.com/EricLagerg/go-gnulib/posix
+go get -u github.com/EricLagerg/go-gnulib/sysinfo
+go get -u github.com/EricLagerg/go-gnulib/ttyname
+go get -u github.com/EricLagerg/go-gnulib/utmp
+go get -u github.com/EricLagerg/go-gnulib/windows

@@ -97,9 +97,3 @@ type Utmp struct {
 	Addr    [4]int32       // Internet address of remote host; IPv4 address uses just Addr[0]
 	Unused  [20]byte       // Reserved for future use
 }
-
-// An error accessing a Utmp file
-type UtmpError struct {
-	err  error
-	name string
-}

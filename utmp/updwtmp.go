@@ -29,14 +29,14 @@ import (
 )
 
 // Appends structure `u` to the wtmp file
-func UpdWtmp(fi *os.File, lk *syscall.Flock_t, u *Utmp) *UtmpError {
+func UpdWtmp(fi *os.File, lk *syscall.Flock_t, u *Utmp) error {
 	su := unsafe.Sizeof(u)
 
 	sz, err := fi.Seek(0, os.SEEK_END)
 	if err != nil {
 		// Cannot safely get file size in order to write
 		Unlock(fi, lk)
-		return &UtmpError{err, nil}
+		return err
 	}
 
 	// If we can't write safely rewind the file and exit
@@ -45,19 +45,19 @@ func UpdWtmp(fi *os.File, lk *syscall.Flock_t, u *Utmp) *UtmpError {
 		err = syscall.Ftruncate(int(fi.Fd()), sz)
 		if err != nil {
 			Unlock(fi, lk)
-			return &UtmpError{err, nil}
+			return err
 		}
 	}
 
 	if err != nil {
 		Unlock(fi, lk)
-		return &UtmpError{err, nil}
+		return err
 	}
 
 	err = binary.Write(fi, binary.LittleEndian, &u)
 	if err != nil {
 		Unlock(fi, lk)
-		return &UtmpError{err, nil}
+		return err
 	}
 
 	return nil
@@ -65,7 +65,7 @@ func UpdWtmp(fi *os.File, lk *syscall.Flock_t, u *Utmp) *UtmpError {
 
 // Constructs a struct using `line`, `name` (user), `host`, current time,
 // and current PID. Calls UdpWtmp() to append entry.
-func LogWtmp(fi *os.File, lk *syscall.Flock_t, line, user, host string) *UtmpError {
+func LogWtmp(fi *os.File, lk *syscall.Flock_t, line, user, host string) error {
 	u := new(Utmp)
 	u.Time.GetTimeOfDay()
 	u.Pid = int32(os.Getpid())
@@ -75,7 +75,7 @@ func LogWtmp(fi *os.File, lk *syscall.Flock_t, line, user, host string) *UtmpErr
 
 	err := UpdWtmp(fi, lk, u)
 	if err != nil {
-		return &UtmpError{err.WriteErr, err.LockErr}
+		return err
 	}
 
 	return nil

@@ -165,7 +165,7 @@ Time:
 }
 
 // Write to a wtmp file.
-// On error returns a pointer to a UtmpError struct, else nil
+// On error returns a pointer to a error struct, else nil
 func WriteWtmp(fi *os.File, lk *syscall.Flock_t, user, id string, pid int32, utype int16, line string) error {
 
 	u := new(Utmp)
