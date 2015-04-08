@@ -51,7 +51,7 @@ func SafeOpen(name string, flag int, perm os.FileMode) (*os.File, *syscall.Flock
 	// Lock the file so we're responsible
 	lk := syscall.Flock_t{
 		Type:   syscall.F_WRLCK,    // set write lock
-		Whence: os.SEEK_SET,        // set to offset
+		Whence: 0,                  // SEEK_SET
 		Start:  0,                  // beginning of file
 		Len:    0,                  // until EOF
 		Pid:    int32(os.Getpid()), // our PID
