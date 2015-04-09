@@ -1,11 +1,14 @@
 // +build s390x
 
+// NOTE: DEPRECIATED
+
 package posix
 
 import (
 	"syscall"
 )
 
+// NOTE: DEPRECIATED
 // DONTNEED and NOREUSE differ on s390x
 // http://lxr.free-electrons.com/source/include/uapi/linux/fadvise.h#L14
 const (
@@ -17,6 +20,7 @@ const (
 	FADVISE_NOREUSE    = 0x7
 )
 
+// NOTE: DEPRECIATED
 func Fadvise64(fd int, offset int64, length int64, advice int) error {
 	_, _, errno := syscall.Syscall6(syscall.SYS_FADVISE64,
 		uintptr(fd),

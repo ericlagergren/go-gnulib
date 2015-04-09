@@ -1,11 +1,14 @@
 // +build arm
 
+// NOTE: DEPRECIATED
+
 package posix
 
 import (
 	"syscall"
 )
 
+// NOTE: DEPRECIATED
 const (
 	FADVISE_NORMAL     = 0x0
 	FADVISE_RANDOM     = 0x1
@@ -15,6 +18,7 @@ const (
 	FADVISE_NOREUSE    = 0x5
 )
 
+// NOTE: DEPRECIATED
 // ARM64 requires arguments to be realigned.
 // http://linux.die.net/man/2/posix_fadvise
 func Fadvise64(fd int, advice int64, offset int64, length int) error {

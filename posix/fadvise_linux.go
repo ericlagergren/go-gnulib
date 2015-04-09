@@ -1,9 +1,12 @@
+// NOTE: DEPRECIATED
+
 package posix
 
 import (
 	"syscall"
 )
 
+// NOTE: DEPRECIATED
 const (
 	FADVISE_NORMAL     = 0x0
 	FADVISE_RANDOM     = 0x1
@@ -13,6 +16,7 @@ const (
 	FADVISE_NOREUSE    = 0x5
 )
 
+// NOTE: DEPRECIATED
 func Fadvise64(fd int, offset int64, length int64, advice int) error {
 	_, _, errno := syscall.Syscall6(syscall.SYS_FADVISE64,
 		uintptr(fd),
