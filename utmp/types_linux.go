@@ -53,7 +53,7 @@ const (
 
 	BtmpFile        = "/var/log/btmp"
 	BtmpFileName    = BtmpFile
-	LastLogFile     = "/var/log/LastLog"
+	LastLogFile     = "/var/log/lastlog"
 	LastLogFileName = LastLogFile
 )
 
