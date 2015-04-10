@@ -29,7 +29,7 @@ import (
 )
 
 // Appends structure U to the wtmp file
-func UpdWtmp(fi *os.File, u *Utmp) error {
+func (u *Utmp) UpdWtmp(fi *os.File) error {
 	const su = unsafe.Sizeof(*u)
 
 	sz, err := fi.Seek(0, os.SEEK_END)
@@ -38,7 +38,7 @@ func UpdWtmp(fi *os.File, u *Utmp) error {
 		return err
 	}
 
-	// If we can't write safely rewind the file and exit
+	// If we can't write safely reset the file and exit
 	if sz%int64(su) != 0 {
 		sz -= int64(su)
 		err = syscall.Ftruncate(int(fi.Fd()), sz)
@@ -51,17 +51,12 @@ func UpdWtmp(fi *os.File, u *Utmp) error {
 		return err
 	}
 
-	err = binary.Write(fi, binary.LittleEndian, &u)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return binary.Write(fi, binary.LittleEndian, &u)
 }
 
 // Constructs a struct using LINE, USER, HOST, current time,
 // and current PID. Calls UdpWtmp() to append entry.
-func LogWtmp(fi *os.File, line, user, host string) error {
+func LogWtmp(file *os.File, line, user, host string) error {
 	u := new(Utmp)
 	u.Time.GetTimeOfDay()
 	u.Pid = int32(os.Getpid())
@@ -69,10 +64,5 @@ func LogWtmp(fi *os.File, line, user, host string) error {
 	_ = copy(u.User[:], []byte(user))
 	_ = copy(u.Line[:], []byte(line))
 
-	err := UpdWtmp(fi, u)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return u.UpdWtmp(file)
 }

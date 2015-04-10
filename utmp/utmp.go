@@ -68,11 +68,7 @@ func SafeOpen(name string) (*os.File, *syscall.Flock_t, error) {
 // Unlocks the file and then closes it
 func SafeClose(file *os.File, lk *syscall.Flock_t) error {
 	Unlock(file, lk)
-	err := file.Close()
-	if err != nil {
-		return err
-	}
-	return nil
+	return file.Close()
 }
 
 // Unlock open file
@@ -92,21 +88,15 @@ func SetUtEnt(file *os.File) error {
 
 // Close file
 func EndUtEnt(file *os.File) error {
-	err := file.Close()
-	if err != nil {
-		return err
-	}
-	return nil
+	return file.Close()
 }
 
 // Searches forward from point in file and finds the correct entry based on id
 // Returns -1 if no appropriate entry is found
 func (u *Utmp) GetUtid(file *os.File) (int64, *Utmp) {
-	var i int64
 
-	// I do this because
-	// https://github.com/lattera/glibc/blob/master/login/getutid_r.c#L43
-	// I'm sure '<' and '>' would work just fine in Go, however.
+	// These constants aren't guarenteed to be within a certain range,
+	// so we can't check with '<' and '>'
 	if u.Type != RunLevel &&
 		u.Type != BootTime &&
 		u.Type != NewTime &&
@@ -119,12 +109,14 @@ func (u *Utmp) GetUtid(file *os.File) (int64, *Utmp) {
 		return -1, nil
 	}
 
+	const size = int(unsafe.Sizeof(*u))
+	offset := 0
+
 	if u.Type == RunLevel ||
 		u.Type == BootTime ||
 		u.Type == NewTime ||
 		u.Type == OldTime {
 
-		i := 0
 		for {
 			nu := new(Utmp)
 
@@ -137,17 +129,16 @@ func (u *Utmp) GetUtid(file *os.File) (int64, *Utmp) {
 			}
 
 			if u.Type == nu.Type {
-				return (i + 1) * int(unsafe.Sizeof(*nu)), nu
+				break
 			}
-			i++
+			offset += size
 		}
-		return -1, nil
+
 	} else if u.Type == InitProcess ||
 		u.Type == LoginProcess ||
 		u.Type == UserProcess ||
 		u.Type == DeadProcess {
 
-		i := 0
 		for {
 			nu := new(Utmp)
 
@@ -160,11 +151,10 @@ func (u *Utmp) GetUtid(file *os.File) (int64, *Utmp) {
 			}
 
 			if u.Id == u.Id {
-				return (i + 1) * int(unsafe.Sizeof(*nu)), nu
+				break
 			}
-			i++
+			offset += size
 		}
-		return -1, nil
 	}
 
 	return -1, nil
@@ -187,12 +177,7 @@ func WriteWtmp(file *os.File, user, id string, pid int32, utype int16, line stri
 		_ = copy(u.Host[:], general.Int8ToByte(name.Release[:]))
 	}
 
-	err := UpdWtmp(file, u)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return u.UpdWtmp(file)
 }
 
 // Write to a utmp file.
@@ -226,11 +211,7 @@ func WriteUtmp(file *os.File, user, id string, pid int32, utype int16, line, old
 		return err
 	}
 
-	if err := u.PutUtLine(file); err != nil {
-		return err
-	}
-
-	return nil
+	return u.PutUtLine(file)
 }
 
 // Writes to name at fi's current position, else append
@@ -263,19 +244,15 @@ func (u *Utmp) PutUtLine(file *os.File) error {
 		return err
 	}
 
-	err = binary.Write(file, binary.LittleEndian, u)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return binary.Write(file, binary.LittleEndian, u)
 }
 
-func WriteUtmpWtmp(file *os.File, user, id string, pid int32, utype int16, line string) bool {
+// In glibc this is void
+func WriteUtmpWtmp(file *os.File, user, id string, pid int32, utype int16, line string) {
 	var oldline string
 
 	if user == "" {
-		return false
+		return
 	}
 
 	WriteUtmp(file, user, id, pid, utype, line, oldline)
@@ -284,5 +261,5 @@ func WriteUtmpWtmp(file *os.File, user, id string, pid int32, utype int16, line 
 	}
 	WriteWtmp(file, user, id, pid, utype, line)
 
-	return true
+	return
 }
