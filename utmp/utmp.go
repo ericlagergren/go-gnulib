@@ -23,7 +23,6 @@ package utmp
 
 import (
 	"encoding/binary"
-	"io"
 	"os"
 	"syscall"
 	"time"
@@ -75,89 +74,6 @@ func SafeClose(file *os.File, lk *syscall.Flock_t) error {
 func Unlock(file *os.File, lk *syscall.Flock_t) {
 	lk.Type = syscall.F_ULOCK
 	_ = syscall.FcntlFlock(file.Fd(), syscall.F_SETLK, lk)
-}
-
-// Rewind to beginning of file
-func SetUtEnt(file *os.File) error {
-	_, err := file.Seek(0, os.SEEK_SET)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// Close file
-func EndUtEnt(file *os.File) error {
-	return file.Close()
-}
-
-// Searches forward from point in file and finds the correct entry based on id
-// Returns -1 if no appropriate entry is found
-func (u *Utmp) GetUtid(file *os.File) (int64, *Utmp) {
-
-	// These constants aren't guarenteed to be within a certain range,
-	// so we can't check with '<' and '>'
-	if u.Type != RunLevel &&
-		u.Type != BootTime &&
-		u.Type != NewTime &&
-		u.Type != OldTime &&
-		u.Type != InitProcess &&
-		u.Type != LoginProcess &&
-		u.Type != UserProcess &&
-		u.Type != DeadProcess {
-
-		return -1, nil
-	}
-
-	const size = int(unsafe.Sizeof(*u))
-	offset := 0
-
-	if u.Type == RunLevel ||
-		u.Type == BootTime ||
-		u.Type == NewTime ||
-		u.Type == OldTime {
-
-		for {
-			nu := new(Utmp)
-
-			err := binary.Read(file, binary.LittleEndian, nu)
-			if err != nil && err != io.EOF {
-				break
-			}
-			if err == io.EOF {
-				break
-			}
-
-			if u.Type == nu.Type {
-				break
-			}
-			offset += size
-		}
-
-	} else if u.Type == InitProcess ||
-		u.Type == LoginProcess ||
-		u.Type == UserProcess ||
-		u.Type == DeadProcess {
-
-		for {
-			nu := new(Utmp)
-
-			err := binary.Read(file, binary.LittleEndian, nu)
-			if err != nil && err != io.EOF {
-				break
-			}
-			if err == io.EOF {
-				break
-			}
-
-			if u.Id == u.Id {
-				break
-			}
-			offset += size
-		}
-	}
-
-	return -1, nil
 }
 
 // Write to a wtmp file.
