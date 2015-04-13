@@ -5,7 +5,7 @@
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
+	the Free Software Foundation, either version 2 of the License, or
 	(at your option) any later version.
 
 	This program is distributed in the hope that it will be useful,
@@ -19,6 +19,8 @@
 
 /* Written by Eric Lagergren <ericscottlagergren@gmail.com> */
 
+// Package utmp provides the Go-equivalent of the POSIX-defined UTMP
+// routines.
 package utmp
 
 import (
@@ -31,7 +33,8 @@ import (
 	"github.com/EricLagerg/go-gnulib/general"
 )
 
-// Similar to glibc's Gettimeofday()
+// Same as syscall.Gettimeofday, except this uses int32 due to alignment
+// issues in the Utmp structs.
 func (t *timeVal) GetTimeOfDay() {
 	now := time.Now().Unix()
 	t.Usec = int32(now / 1000)
@@ -39,7 +42,8 @@ func (t *timeVal) GetTimeOfDay() {
 }
 
 // A wrapper around os.OpenFile() that locks the file after opening
-// Returns a pointer to the open fd, the lock struct, and an error/nil
+// Will return an error if the file cannot be opened or the file cannot
+// be locked
 func SafeOpen(name string) (*os.File, *syscall.Flock_t, error) {
 
 	fi, err := os.OpenFile(name, os.O_RDWR, os.ModeExclusive)
@@ -64,20 +68,21 @@ func SafeOpen(name string) (*os.File, *syscall.Flock_t, error) {
 	return fi, &lk, nil
 }
 
-// Unlocks the file and then closes it
+// Unlocks the file and then closes it. Returns an error if the file
+// cannot be closed; unlocking errors are ignored.
 func SafeClose(file *os.File, lk *syscall.Flock_t) error {
 	Unlock(file, lk)
 	return file.Close()
 }
 
-// Unlock open file
+// Unlock an open file. Unlocking errors are ignored.
 func Unlock(file *os.File, lk *syscall.Flock_t) {
 	lk.Type = syscall.F_ULOCK
 	_ = syscall.FcntlFlock(file.Fd(), syscall.F_SETLK, lk)
 }
 
-// Write to a wtmp file.
-// On error returns a pointer to a error struct, else nil
+// Write an event into the Wtmp file. An error is returned if the event
+// cannot be appended to the Wtmp file.
 func WriteWtmp(file *os.File, user, id string, pid int32, utype int16, line string) error {
 
 	u := new(Utmp)
@@ -96,8 +101,8 @@ func WriteWtmp(file *os.File, user, id string, pid int32, utype int16, line stri
 	return u.UpdWtmp(file)
 }
 
-// Write to a utmp file.
-// On error returns a pointer to a UtmpError struct, else nil
+// Write an event into the Utmp file. An error is returned if the event
+// cannot be written to the Utmp file.
 func WriteUtmp(file *os.File, user, id string, pid int32, utype int16, line, oldline string) error {
 
 	u := new(Utmp)
@@ -130,7 +135,7 @@ func WriteUtmp(file *os.File, user, id string, pid int32, utype int16, line, old
 	return u.PutUtLine(file)
 }
 
-// Writes to name at fi's current position, else append
+// Writes to name at
 func (u *Utmp) PutUtLine(file *os.File) error {
 	const su = unsafe.Sizeof(*u)
 

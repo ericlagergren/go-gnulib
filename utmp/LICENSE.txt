@@ -1,0 +1,3 @@
+Some files are under the GPLv2, some under LGPL.
+
+License texts included in their respective `.txt` files.
