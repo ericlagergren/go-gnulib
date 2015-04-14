@@ -25,6 +25,7 @@ package utmp
 
 import (
 	"encoding/binary"
+	"fmt"
 	"os"
 	"syscall"
 	"time"
@@ -59,7 +60,9 @@ func SafeOpen(name string) (*os.File, *syscall.Flock_t, error) {
 		Len:    0,                  // until EOF
 		Pid:    int32(os.Getpid()), // our PID
 	}
+
 	err = syscall.FcntlFlock(fi.Fd(), syscall.F_SETLKW, &lk)
+
 	// If we can't lock the file error out to prevent corruption
 	if err != nil {
 		return nil, nil, err
@@ -71,7 +74,9 @@ func SafeOpen(name string) (*os.File, *syscall.Flock_t, error) {
 // Unlocks the file and then closes it. Returns an error if the file
 // cannot be closed; unlocking errors are ignored.
 func SafeClose(file *os.File, lk *syscall.Flock_t) error {
-	Unlock(file, lk)
+	if lk != nil {
+		Unlock(file, lk)
+	}
 	return file.Close()
 }
 
@@ -83,7 +88,7 @@ func Unlock(file *os.File, lk *syscall.Flock_t) {
 
 // Write an event into the Wtmp file. An error is returned if the event
 // cannot be appended to the Wtmp file.
-func WriteWtmp(file *os.File, user, id string, pid int32, utype int16, line string) error {
+func WriteWtmp(user, id string, pid int32, utype int16, line string) error {
 
 	u := new(Utmp)
 	u.Time.GetTimeOfDay()
@@ -98,12 +103,12 @@ func WriteWtmp(file *os.File, user, id string, pid int32, utype int16, line stri
 		_ = copy(u.Host[:], general.Int8ToByte(name.Release[:]))
 	}
 
-	return u.UpdWtmp(file)
+	return u.UpdWtmp(WtmpFile)
 }
 
 // Write an event into the Utmp file. An error is returned if the event
 // cannot be written to the Utmp file.
-func WriteUtmp(file *os.File, user, id string, pid int32, utype int16, line, oldline string) error {
+func WriteUtmp(user, id string, pid int32, utype int16, line, oldline string) error {
 
 	u := new(Utmp)
 	u.Time.GetTimeOfDay()
@@ -118,7 +123,14 @@ func WriteUtmp(file *os.File, user, id string, pid int32, utype int16, line, old
 		_ = copy(u.Host[:], general.Int8ToByte(name.Release[:]))
 	}
 
+	file, lk, err := SafeOpen(UtmpFile)
+	if err != nil {
+		goto done
+	}
+
 	if utype == DeadProcess {
+
+		_ = SetUtEnt(file)
 		if r, st := u.GetUtid(file); r > -1 {
 			_ = copy(u.Line[:], st.Line[:])
 			if oldline != "" {
@@ -127,38 +139,50 @@ func WriteUtmp(file *os.File, user, id string, pid int32, utype int16, line, old
 		}
 	}
 
-	err := SetUtEnt(file)
+	err = SetUtEnt(file)
 	if err != nil {
-		return err
+		goto done
 	}
 
-	return u.PutUtLine(file)
+	err = u.PutUtLine(file)
+
+done:
+	if file != nil {
+		SafeClose(file, lk)
+	}
+	return err
 }
 
-// Writes to name at
+// Writes to name at the appropriate place in the database
 func (u *Utmp) PutUtLine(file *os.File) error {
-	const su = unsafe.Sizeof(*u)
+	const utmpSize = unsafe.Sizeof(*u)
 
 	// Save current position
 	cur, _ := u.GetUtid(file)
 
-	sz, err := file.Seek(0, os.SEEK_END)
+	fileSize, err := file.Seek(0, os.SEEK_END)
 	if err != nil {
 		// Cannot safely get file size in order to write
 		return err
 	}
 
-	// If we can't write safely rewind the file and exit
-	if sz%int64(su) != 0 {
-		sz -= int64(su)
-		err = syscall.Ftruncate(int(file.Fd()), sz)
-		if err != nil {
-			return err
+	// If we can't write safely undo our changes and exit
+	if fileSize%int64(utmpSize) != 0 {
+		fileSize -= int64(utmpSize)
+
+		terr := syscall.Ftruncate(int(file.Fd()), fileSize)
+
+		if terr != nil {
+			err = fmt.Errorf("database is an invalid size, truncate failed: %s", terr)
+		} else {
+			err = fmt.Errorf("database is an invalid size, rewound to %d", fileSize)
 		}
+
+		return err
 	}
 
 	if cur == -1 {
-		cur = sz
+		cur = fileSize
 	}
 	_, err = file.Seek(cur, os.SEEK_SET)
 	if err != nil {
@@ -166,9 +190,10 @@ func (u *Utmp) PutUtLine(file *os.File) error {
 	}
 
 	return binary.Write(file, binary.LittleEndian, u)
+
 }
 
-// In glibc this is void
+// Write to both Utmp and Wtmp files
 func WriteUtmpWtmp(file *os.File, user, id string, pid int32, utype int16, line string) {
 	var oldline string
 
@@ -176,11 +201,11 @@ func WriteUtmpWtmp(file *os.File, user, id string, pid int32, utype int16, line 
 		return
 	}
 
-	WriteUtmp(file, user, id, pid, utype, line, oldline)
+	WriteUtmp(user, id, pid, utype, line, oldline)
 	if line == "" && line[0] == 0 {
 		line = oldline
 	}
-	WriteWtmp(file, user, id, pid, utype, line)
+	WriteWtmp(user, id, pid, utype, line)
 
 	return
 }

@@ -23,40 +23,55 @@ package utmp
 
 import (
 	"encoding/binary"
+	"fmt"
 	"os"
 	"syscall"
 	"unsafe"
 )
 
-// Appends structure U to the wtmp file
-func (u *Utmp) UpdWtmp(fi *os.File) error {
-	const su = unsafe.Sizeof(*u)
+// Appends a Wtmp entry to the wtmp file
+func (u *Utmp) UpdWtmp(path string) error {
+	const utmpSize = unsafe.Sizeof(*u)
+	var fileSize int64
 
-	sz, err := fi.Seek(0, os.SEEK_END)
+	file, lk, err := SafeOpen(path)
+	if err != nil {
+		goto done
+	}
+
+	fileSize, err = file.Seek(0, os.SEEK_END)
 	if err != nil {
 		// Cannot safely get file size in order to write
-		return err
+		goto done
 	}
 
-	// If we can't write safely reset the file and exit
-	if sz%int64(su) != 0 {
-		sz -= int64(su)
-		err = syscall.Ftruncate(int(fi.Fd()), sz)
-		if err != nil {
-			return err
+	// If we can't safely write, undo our changes and exit
+	if fileSize%int64(utmpSize) != 0 {
+		fileSize -= int64(utmpSize)
+
+		terr := syscall.Ftruncate(int(file.Fd()), fileSize)
+
+		if terr != nil {
+			err = fmt.Errorf("database is an invalid size, truncate failed: %s", terr)
+		} else {
+			err = fmt.Errorf("database is an invalid size, rewound to %d", fileSize)
 		}
+
+		goto done
 	}
 
-	if err != nil {
-		return err
-	}
+	err = binary.Write(file, binary.LittleEndian, &u)
 
-	return binary.Write(fi, binary.LittleEndian, &u)
+done:
+	if file != nil {
+		SafeClose(file, lk)
+	}
+	return err
 }
 
 // Constructs a struct using LINE, USER, HOST, current time,
 // and current PID. Calls UdpWtmp() to append entry.
-func LogWtmp(file *os.File, line, user, host string) error {
+func LogWtmp(file, line, user, host string) error {
 	u := new(Utmp)
 	u.Time.GetTimeOfDay()
 	u.Pid = int32(os.Getpid())

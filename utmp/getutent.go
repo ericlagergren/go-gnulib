@@ -31,10 +31,7 @@ import (
 // Rewind to beginning of file
 func SetUtEnt(file *os.File) error {
 	_, err := file.Seek(0, os.SEEK_SET)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
 // Close file
