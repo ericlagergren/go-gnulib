@@ -79,13 +79,13 @@ func SafeClose(file *os.File, lk *syscall.Flock_t) error {
 }
 
 // Unlock an open file. Unlocking errors are ignored.
-func Unlock(file *os.File, lk *syscall.Flock_t) {
+func Unlock(file *os.File, lk *syscall.Flock_t) error {
 	if lk == nil || file == nil {
 		return fmt.Errorf("file or lock are nil file: %s lk: %s", file, lk)
 	}
 
 	lk.Type = syscall.F_ULOCK
-	_ = syscall.FcntlFlock(file.Fd(), syscall.F_SETLK, lk)
+	return syscall.FcntlFlock(file.Fd(), syscall.F_SETLK, lk)
 }
 
 // Write an event into the Wtmp file. An error is returned if the event
