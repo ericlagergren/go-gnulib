@@ -129,7 +129,7 @@ func (u *Utmp) GetUtLine(file *os.File) (*Utmp, error) {
 		}
 
 		if nu.Type == LoginProcess || nu.Type == UserProcess {
-			if bytes.Equal(nu.Line, u.Line) {
+			if bytes.Equal(nu.Line[:], u.Line[:]) {
 				return u, nil
 			}
 		}
