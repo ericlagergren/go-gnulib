@@ -14,7 +14,7 @@ func GetLogin() (string, error) {
 	}
 
 	u := new(utmp.Utmp)
-	u.Line = name[5:]
+	_ = copy(u.Line[:], []byte(name[5:]))
 
 	file, err := os.Open(utmp.UtmpFile)
 	if err != nil {
@@ -26,5 +26,5 @@ func GetLogin() (string, error) {
 		return "", err
 	}
 
-	return string(line.Line), nil
+	return string(line.User[:]), nil
 }
