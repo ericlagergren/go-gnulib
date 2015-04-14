@@ -74,14 +74,16 @@ func SafeOpen(name string) (*os.File, *syscall.Flock_t, error) {
 // Unlocks the file and then closes it. Returns an error if the file
 // cannot be closed; unlocking errors are ignored.
 func SafeClose(file *os.File, lk *syscall.Flock_t) error {
-	if lk != nil {
-		Unlock(file, lk)
-	}
+	Unlock(file, lk)
 	return file.Close()
 }
 
 // Unlock an open file. Unlocking errors are ignored.
 func Unlock(file *os.File, lk *syscall.Flock_t) {
+	if lk == nil || file == nil {
+		return fmt.Errorf("file or lock are nil file: %s lk: %s", file, lk)
+	}
+
 	lk.Type = syscall.F_ULOCK
 	_ = syscall.FcntlFlock(file.Fd(), syscall.F_SETLK, lk)
 }
