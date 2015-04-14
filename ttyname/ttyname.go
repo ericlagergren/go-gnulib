@@ -133,7 +133,7 @@ func IsAtty(fd uintptr) bool {
 	return err == 0
 }
 
-// Returns a pointer to a string from a uintptr describing a file descriptor
+// Returns a string from a uintptr describing a file descriptor
 func TtyName(fd uintptr) (string, error) {
 	var name string
 

@@ -22,6 +22,7 @@
 package utmp
 
 import (
+	"bytes"
 	"encoding/binary"
 	"io"
 	"os"
@@ -113,4 +114,26 @@ func (u *Utmp) GetUtid(file *os.File) (int64, *Utmp) {
 	}
 
 	return -1, nil
+}
+
+func (u *Utmp) GetUtLine(file *os.File) (*Utmp, error) {
+	for {
+		nu := new(Utmp)
+
+		err := binary.Read(file, binary.LittleEndian, nu)
+		if err != nil && err != io.EOF {
+			break
+		}
+		if err == io.EOF {
+			break
+		}
+
+		if nu.Type == LoginProcess || nu.Type == UserProcess {
+			if bytes.Equal(nu.Line, u.Line) {
+				return u, nil
+			}
+		}
+	}
+
+	return nil, nil
 }
