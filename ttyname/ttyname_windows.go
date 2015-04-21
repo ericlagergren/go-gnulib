@@ -23,17 +23,20 @@ package ttyname
 
 import (
 	"bytes"
+	"errors"
 	"syscall"
 
 	"github.com/EricLagerg/go-gnulib/windows"
 )
+
+const delim = 0 // null byte
 
 var (
 	NotTty = errors.New("not a tty device")
 )
 
 func count(s []byte) int64 {
-	count := 0
+	count := int64(0)
 	i := 0
 	for i < len(s) {
 		if s[i] != delim {
