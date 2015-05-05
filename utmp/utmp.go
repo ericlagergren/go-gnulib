@@ -36,7 +36,7 @@ import (
 
 // Same as syscall.Gettimeofday, except this uses int32 due to alignment
 // issues in the Utmp structs.
-func (t *timeVal) GetTimeOfDay() {
+func (t *TimeVal) GetTimeOfDay() {
 	now := time.Now().Unix()
 	t.Usec = int32(now / 1000)
 	t.Sec = int32(now)

@@ -29,9 +29,9 @@ import "C"
 const (
 	Empty        = C.EMPTY         // Record does not contain valid info (formerly known as UT_UNKNOWN on Linux)s
 	RunLevel     = C.RUN_LVL       // Change in system run-level (see init(8))s
-	BootTime     = C.BOOT_TIME     // Time of system boot (in timeVal)s
-	NewTime      = C.NEW_TIME      // Time after system clock change (in timeVal)s
-	OldTime      = C.OLD_TIME      // Time before system clock change (in timeVal)s
+	BootTime     = C.BOOT_TIME     // Time of system boot (in TimeVal)s
+	NewTime      = C.NEW_TIME      // Time after system clock change (in TimeVal)s
+	OldTime      = C.OLD_TIME      // Time before system clock change (in TimeVal)s
 	InitProcess  = C.INIT_PROCESS  // Process spawned by init(8)s
 	LoginProcess = C.LOGIN_PROCESS // Session leader process for user logins
 	UserProcess  = C.USER_PROCESS  // Normal processs
