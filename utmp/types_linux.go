@@ -93,7 +93,7 @@ type Utmp struct {
 	Host    [HostSize]byte // Hostname for remote login or kernel version for run-level messages
 	Exit    exit           // Exit status of a process marked as DeadProcess; not used by Linux init(1)
 	Session int32          // Session ID (getsid(2)), used for windowing
-	Time    timeVal        // Time entry was made
+	Time    TimeVal        // Time entry was made
 	Addr    [4]int32       // Internet address of remote host; IPv4 address uses just Addr[0]
 	Unused  [20]byte       // Reserved for future use
 }
