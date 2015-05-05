@@ -70,7 +70,7 @@ type exit struct {
 }
 
 // Not using syscall because int64s mess up our binary reads
-type timeVal struct {
+type TimeVal struct {
 	Sec  int32
 	Usec int32
 }

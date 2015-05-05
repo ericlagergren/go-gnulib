@@ -8,6 +8,10 @@ import (
 )
 
 func GetLogin() (string, error) {
+
+	// GetLogin is based on stdin, so find the name of the current terminal
+	// and return nothing if it doesn't exist. According to GNU, this is what
+	// DEC Unix, SunOS, Solaris, and HP-UX all do.
 	name, err := ttyname.TtyName(os.Stdin.Fd())
 	if err != nil {
 		return "", err
