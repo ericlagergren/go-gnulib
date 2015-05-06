@@ -10,7 +10,7 @@ import (
 // Put the 1 minute, 5 minute and 15 minute load averages
 // into the first avg. Return the number written (never more than, but may
 // be less than, 3), or -1 if an error occurred.
-func GetLoadAvg(avg [3]float64) int {
+func GetLoadAvg(avg *[3]float64) int {
 	file, err := os.Open("/proc/loadavg")
 	if err != nil {
 		return -1
