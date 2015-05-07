@@ -32,27 +32,36 @@ import (
 
 // Determines whether the Utmp entry is desired by the user who asked for
 // the specified options
-func (u *Utmp) isDesirable(opts int) bool {
+func (u *Utmp) IsDesirable(opts int) bool {
 	p := u.IsUserProcess()
-	if opts == 0 {
-		return true
-	}
 	if (opts&ReadUserProcess != 0) && !p {
 		return false
 	}
-	if (opts&CheckPIDs != 0) && p && 0 < u.Pid && syscall.Kill(int(u.Pid), 0) != syscall.ESRCH {
+
+	if (opts&CheckPIDs != 0) &&
+		p &&
+		0 < u.Pid &&
+		(syscall.Kill(int(u.Pid), 0) != syscall.ESRCH) {
+
 		return false
 	}
+
 	return true
 }
 
+// UT_TYPE_EQUALS(V) ((V)->type)
+func (u *Utmp) TypeEquals(v int16) bool {
+	return u.Type == v
+}
+
 // Basically the same as this C macro:
-// # define IS_USER_PROCESS(U)                                     \
+// # define IS_USER_PROCESS(U)                                    \
 //   (UT_USER (U)[0]                                              \
 //    && (UT_TYPE_USER_PROCESS (U)                                \
 //        || (UT_TYPE_NOT_DEFINED && UT_TIME_MEMBER (U) != 0)))
 func (u *Utmp) IsUserProcess() bool {
-	return u.User[0] != 0 && (u.Type == UserProcess || u.Time.Sec != 0)
+	return u.User[0] != 0 &&
+		(u.TypeEquals(UserProcess) || (TypeNotDefined && u.Time.Sec != 0))
 }
 
 // Return stringified version of a username.
@@ -92,7 +101,7 @@ func ReadUtmp(fname string, entries *uint64, us *[]Utmp, opts int) error {
 			break
 		}
 
-		if u.isDesirable(opts) {
+		if u.IsDesirable(opts) {
 			// Grow if needed
 			if len(*us) <= int(i) {
 				*us = append(*us, u)

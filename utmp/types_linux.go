@@ -25,6 +25,8 @@ package utmp
 // #include <lastlog.h>
 import "C"
 
+const TypeNotDefined = false
+
 // Values for Utmp.Type field
 const (
 	Empty        = C.EMPTY         // Record does not contain valid info (formerly known as UT_UNKNOWN on Linux)s
