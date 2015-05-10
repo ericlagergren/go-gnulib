@@ -30,7 +30,7 @@ func GetLoadAvg(avg *[3]float64) int {
 
 		avg[i], err = strconv.ParseFloat(string(buf[j:end]), 64)
 		if err != nil {
-			panic(err)
+			return -1
 		}
 
 		// Skip over the space and mark our last position

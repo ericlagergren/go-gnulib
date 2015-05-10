@@ -1,15 +1,19 @@
 package general
 
+import "bytes"
+
 // General helper functions
 
 // Find length of a C-style string
-func Clen(n []byte) int {
-	for i := 0; i < len(n); i++ {
-		if n[i] == 0 {
-			return i
-		}
+func Clen(b []byte) int {
+	end := bytes.IndexByte(b, '0')
+	if end == -1 {
+		return len(b)
 	}
-	return len(n)
+
+	// +1 because the index of an element in an array isn't the same as
+	// the length from the beginning of the array to said element.
+	return end + 1
 }
 
 // Convert an int8 slice to byte slice
@@ -22,7 +26,7 @@ func Int8ToByte(arr []int8) []byte {
 	return s[:]
 }
 
-// change -1 to 0
+// Change -1 to 0
 func FixCount(n int, err error) (int, error) {
 	if n < 0 {
 		n = 0
