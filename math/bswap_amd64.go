@@ -1,6 +1,6 @@
 package math
 
-func bswap32(x uint32) uint32 {
+func Bswap32(x uint32) uint32 {
 	return ((x << 24) & 0xff000000) |
 		((x << 8) & 0x00ff0000) |
 		((x >> 8) & 0x0000ff00) |
@@ -8,7 +8,7 @@ func bswap32(x uint32) uint32 {
 }
 
 //TODO write in asm or move to separate file
-func bswap64(x uint64) uint64 {
+func Bswap64(x uint64) uint64 {
 	return ((x << 56) & 0xff00000000000000) |
 		((x << 40) & 0x00ff000000000000) |
 		((x << 24) & 0x0000ff0000000000) |

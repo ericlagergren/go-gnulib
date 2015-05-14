@@ -35,6 +35,10 @@ import (
 	"github.com/EricLagerg/go-gnulib/general"
 )
 
+func htobe64(x uint64) uint64 {
+	return math.Bswap64(x)
+}
+
 // Same as syscall.Gettimeofday, except this uses int32 due to alignment
 // issues in the Utmp structs.
 func (t *TimeVal) GetTimeOfDay() {
