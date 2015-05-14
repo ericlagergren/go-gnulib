@@ -24,18 +24,20 @@ func GetLoadAvg(avg *[3]float64) int {
 		return -1
 	}
 
-	i, j, end := 0, 0, 0
+	i, prev, pos := 0, 0, 0
 	for ; i < 3; i++ {
-		end += bytes.IndexByte(buf[end:n], ' ')
+		if pos += bytes.IndexByte(buf[prev:n], ' '); pos == -1 {
+			break
+		}
 
-		avg[i], err = strconv.ParseFloat(string(buf[j:end]), 64)
+		avg[i], err = strconv.ParseFloat(string(buf[prev:pos]), 64)
 		if err != nil {
 			return -1
 		}
 
 		// Skip over the space and mark our last position
-		end++
-		j = end
+		pos++
+		prev = pos
 	}
 
 	return i
