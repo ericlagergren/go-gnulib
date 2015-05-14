@@ -2,6 +2,7 @@ package stdlib
 
 import (
 	"syscall"
+	"unsafe"
 )
 
 type loadavg struct {
@@ -23,7 +24,7 @@ func GetLoadAvg(avg *[3]float64) int {
 
 	i := 0
 	for ; i < 3; i++ {
-		avg[i] = float64(v) / scale
+		avg[i] = float64(l.ldavg[i]) / scale
 	}
 
 	return i
