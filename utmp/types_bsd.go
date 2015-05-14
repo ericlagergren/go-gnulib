@@ -22,7 +22,6 @@
 package utmp
 
 // #include <utmpx.h>
-// #include <lastlog.h>
 import "C"
 
 const TypeNotDefined = false
