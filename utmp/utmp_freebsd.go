@@ -31,13 +31,9 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/EricLager/go-gnulib/math"
 	"github.com/EricLagerg/go-gnulib/general"
+	"github.com/EricLagerg/go-gnulib/math"
 )
-
-func htobe64(x uint64) uint64 {
-	return math.Bswap64(x)
-}
 
 // Same as syscall.Gettimeofday, except this uses int32 due to alignment
 // issues in the Utmp structs.
@@ -92,7 +88,7 @@ func (u *Utmpx) UtOfType(f *Futx) {
 func (u *Utmpx) UtOfTv(f *Futx) {
 	tv := new(TimeVal)
 	tv.GetTimeOfDay()
-
+	f.Time = htobe64(uint64(u.Time.Sec*1000000) + uint64(tv.Usec))
 }
 
 func (u *Utmpx) UtxToFutx(f *Futx) {
@@ -106,8 +102,78 @@ func (u *Utmpx) UtxToFutx(f *Futx) {
 	case ShutdownTime:
 		break
 	case UserProcess:
-
+		u.UtOfId(f)
+		u.UtOfString(f, User)
+		u.UtOfString(f, Line)
+		u.UtOfString(f, Host)
+		u.UtOfPid(f)
+	case InitProcess:
+		u.UtOfId(f)
+		u.UtOfPid(f)
+	case LoginProcess:
+		u.UtOfId(f)
+		u.UtOfString(f, User)
+		u.UtOfString(f, Line)
+		u.UtOfPid(f)
+	case DeadProcess:
+		u.UtOfId(f)
+		u.UtOfPid(f)
+	default:
+		f.Type = Empty
+		return
 	}
+
+	u.UtOfType(f)
+	u.UtOfId(f)
+}
+
+func (f *Futx) FtOuString(u *Utmpx, typ Utmacro) {
+	switch typ {
+	case User:
+		copy(u.User[:], f.User[:])
+	case Host:
+		copy(u.Host[:], f.Host[:])
+	case Line:
+		copy(u.Line[:], f.Line[:])
+	default:
+		panic("invalid type")
+	}
+}
+
+// #define	UTOF_STRING(ut, fu, field) do { \
+// 	strncpy((fu)->fu_ ## field, (ut)->ut_ ## field,		\
+// 	    MIN(sizeof (fu)->fu_ ## field, sizeof (ut)->ut_ ## field));	\
+// } while (0)
+func (f *Futx) UtOfId(u *Utmpx) {
+	copy(u.Id[:], f.Id[:])
+}
+
+// #define	UTOF_ID(ut, fu) do { \
+// 	memcpy((fu)->fu_id, (ut)->ut_id,				\
+// 	    MIN(sizeof (fu)->fu_id, sizeof (ut)->ut_id));		\
+// } while (0)
+func (f *Futx) FtOuPid(u *Utmpx) {
+	copy(u.Pid[:], f.Pid[:])
+}
+
+// #define	UTOF_TYPE(ut, fu) do { \
+// 	(fu)->fu_type = (ut)->ut_type;					\
+// } while (0)
+func (f *Futx) FtOuType(u *Utmpx) {
+	copy(u.Type[:], f.Type[:])
+}
+
+// #define	UTOF_TV(fu) do { \
+// 	struct timeval tv;						\
+// 	gettimeofday(&tv, NULL);					\
+// 	(fu)->fu_tv = htobe64((uint64_t)tv.tv_sec * 1000000 +		\
+// 	    (uint64_t)tv.tv_usec);					\
+// } while (0)
+func (f *Futx) FtOuTv(u *Utmpx) {
+	var t uint64
+	t = be64toh(f.Time)
+	u.Time.Sec = t / 1000000
+	u.Time.Usec = t % 1000000
 }
 
 // Write an event into the Wtmp file. An error is returned if the event

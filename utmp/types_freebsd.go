@@ -83,17 +83,27 @@ type LastLog struct {
 }
 
 // The structure describing an entry in the user accounting database
-type Utmp struct {
-	Type int16     // Type of entry
-	_    int16     // padding because Go doesn't 4-byte align
-	Id   [8]byte   // Terminal name suffix or inittab(5) ID
-	Pid  int32     // Process ID
+type Utmpx struct {
+	Type   int16     // Type of entry
+	Time   TimeVal   // Time entry was made
+	Id     [8]byte   // Terminal name suffix or inittab(5) ID
+	Pid    int32     // Process ID
+	User   [32]byte  // User login name
+	Line   [16]byte  // Device name
+	Host   [128]byte // Remote hostname
+	Unused [64]byte  // Reserved for future use
+}
+
+type Futx struct {
+	Type uint8     // Type of entry
+	_    uint8     // padding
+	Time uint64    // Time entry was made
+	Id   [8]byte   // Terminal name suffix or intittab(5) ID
+	Pid  uint32    // Process ID
 	User [32]byte  // User login name
 	Line [16]byte  // Device name
 	Host [128]byte // Remote hostname
 }
-type Utmpx Utmp
-type Futx Utmpx
 
 // Exit    exit     // Exit status of a process marked as DeadProcess; not used by Linux init(1)
 // Session int32    // Session ID (getsid(2)), used for windowing
