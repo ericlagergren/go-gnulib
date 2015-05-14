@@ -22,6 +22,7 @@
 package utmp
 
 // #include <utmp.h>
+// #include <utmpx.h>
 // #include <lastlog.h>
 import "C"
 
