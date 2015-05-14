@@ -1,8 +1,12 @@
-go get -u github.com/EricLagerg/go-gnulib/dirent
-go get -u github.com/EricLagerg/go-gnulib/general
-go get -u github.com/EricLagerg/go-gnulib/gsyscall
-go get -u github.com/EricLagerg/go-gnulib/posix
-go get -u github.com/EricLagerg/go-gnulib/sysinfo
-go get -u github.com/EricLagerg/go-gnulib/ttyname
-go get -u github.com/EricLagerg/go-gnulib/utmp
-go get -u github.com/EricLagerg/go-gnulib/windows
+CMD="go get -u github.com/EricLagerg/go-gnulib"
+
+${CMD}/dirent
+${CMD}/general
+${CMD}/gsyscall
+${CMD}/posix
+${CMD}/sysinfo
+${CMD}/ttyname
+${CMD}/utmp
+${CMD}/windows
+${CMD}/stdlib
+${CMD}/math
