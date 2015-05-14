@@ -20,9 +20,10 @@ func GetLoadAvg(avg *[3]float64) int {
 	var l loadavg = *(*loadavg)(unsafe.Pointer(&b[0]))
 
 	scale := float64(l.scale)
+
 	i := 0
 	for ; i < 3; i++ {
-		avg[i] = float64(v / scale)
+		avg[i] = float64(v) / scale
 	}
 
 	return i
