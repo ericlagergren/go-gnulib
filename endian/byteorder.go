@@ -23,6 +23,20 @@ func Htobe64(x uint64) uint64 {
 	return Bswap64(x)
 }
 
+func Htole32(x uint32) uint32 {
+	if ByteOrder == LittleEndian {
+		return x
+	}
+	return Bswap32(x)
+}
+
+func Htole64(x uint64) uint64 {
+	if ByteOrder == LittleEndian {
+		return x
+	}
+	return Bswap64(x)
+}
+
 func init() {
 	var x uint32 = 0x01020304
 	switch *(*byte)(unsafe.Pointer(&x)) {

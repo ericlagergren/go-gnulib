@@ -7,7 +7,6 @@ func Bswap32(x uint32) uint32 {
 		((x >> 24) & 0x000000ff)
 }
 
-//TODO write in asm or move to separate file
 func Bswap64(x uint64) uint64 {
 	return ((x << 56) & 0xff00000000000000) |
 		((x << 40) & 0x00ff000000000000) |

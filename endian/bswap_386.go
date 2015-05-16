@@ -7,7 +7,6 @@ func Bswap32(x uint32) uint32 {
 		((x >> 24) & 0x000000ff)
 }
 
-//TODO write in asm or move to separate file
 func Bswap64(x uint64) uint64 {
 	a := Bswap32(uint32((x & 0x00000000ffffffff)))
 	b := Bswap32(uint32(((x >> 32) & 0x00000000ffffffff)))
