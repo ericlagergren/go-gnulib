@@ -9,4 +9,4 @@ ${CMD}/ttyname
 ${CMD}/utmp
 ${CMD}/windows
 ${CMD}/stdlib
-${CMD}/math
+${CMD}/endian

@@ -31,8 +31,8 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/EricLagerg/go-gnulib/endian"
 	"github.com/EricLagerg/go-gnulib/general"
-	"github.com/EricLagerg/go-gnulib/math"
 )
 
 // Same as syscall.Gettimeofday, except this uses int32 due to alignment
@@ -88,7 +88,7 @@ func (u *Utmpx) UtOfType(f *Futx) {
 func (u *Utmpx) UtOfTv(f *Futx) {
 	tv := new(TimeVal)
 	tv.GetTimeOfDay()
-	f.Time = htobe64(uint64(u.Time.Sec*1000000) + uint64(tv.Usec))
+	f.Time = endian.Htobe64(uint64(u.Time.Sec*1000000) + uint64(tv.Usec))
 }
 
 func (u *Utmpx) UtxToFutx(f *Futx) {
@@ -171,7 +171,7 @@ func (f *Futx) FtOuType(u *Utmpx) {
 // } while (0)
 func (f *Futx) FtOuTv(u *Utmpx) {
 	var t uint64
-	t = be64toh(f.Time)
+	t = endian.Be64toh(f.Time)
 	u.Time.Sec = t / 1000000
 	u.Time.Usec = t % 1000000
 }
