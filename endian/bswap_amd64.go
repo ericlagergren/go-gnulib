@@ -1,4 +1,4 @@
-package math
+package endian
 
 func Bswap32(x uint32) uint32 {
 	return ((x << 24) & 0xff000000) |
