@@ -187,10 +187,8 @@ func (f *Futx) FtOuTv(u *Utmpx) {
 	u.Time.Usec = t % 1000000
 }
 
-func (f *Futx) FutxToUtx(u *Utmpx) {
-	if u == nil {
-		u = new(Utmpx)
-	}
+func (f *Futx) FutxToUtx() *Utmpx {
+	u := new(Utmpx)
 
 	switch f.Type {
 	case BootTime:

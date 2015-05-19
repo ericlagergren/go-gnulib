@@ -22,6 +22,7 @@
 package utmp
 
 // #include <utmpx.h>
+// #include "utdb.x"
 import "C"
 
 const TypeNotDefined = false
@@ -41,14 +42,14 @@ const (
 
 // utmp, wtmp, btmp, and lastlog file names
 const (
-	UtmpFile   = C._PATH_UTMP
-	WtmpFile   = C._PATH_WTMP
-	UtxActive  = C._PATH_UTX_ACTIVE
-	UtxLastLog = C._PATH_UTX_LASTLOGIN
-	UtxLog     = C._PATH_UTX_LOG
+	// Usually /var/run/utx.active
+	UtxActive = C._PATH_UTX_ACTIVE
 
-	BtmpFile    = "/var/log/btmp"
-	LastLogFile = "/var/log/lastlog"
+	// Usually /var/log/utx.lastlogin
+	UtxLastLog = C._PATH_UTX_LASTLOGIN
+
+	// Usually /var/log/utx.log
+	UtxLog = C._PATH_UTX_LOG
 )
 
 const (
@@ -57,10 +58,11 @@ const (
 	Host
 )
 
-// Options for ReadUtmp
+// DB status options
 const (
-	CheckPIDs       = 1
-	ReadUserProcess = 2
+	UtxDBActive    = C.UTXDB_ACTIVE
+	UtxDBLastLogin = C.UTXDB_LASTLOGIN
+	UtxDBLog       = C.UTXDB_LOG
 )
 
 // Structure describing the status of a terminated process.
