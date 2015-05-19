@@ -24,19 +24,30 @@
 package utmp
 
 import (
+	"bytes"
 	"encoding/binary"
-	"fmt"
+	"errors"
+	"io"
 	"os"
-	"syscall"
 	"time"
 	"unsafe"
 
 	"github.com/EricLagerg/go-gnulib/endian"
-	"github.com/EricLagerg/go-gnulib/general"
 )
 
-// Same as syscall.Gettimeofday, except this uses int32 due to alignment
-// issues in the Utmp structs.
+// Order is the current endianness for a system
+var Order binary.ByteOrder
+
+func init() {
+	if endian.ByteOrder == endian.LittleEndian {
+		Order = binary.LittleEndian
+	} else {
+		Order = binary.BigEndian
+	}
+}
+
+// GetTimeOfDay is the same as syscall.Gettimeofday, except this uses int32
+// due to alignment issues in the Utmp structs.
 func (t *TimeVal) GetTimeOfDay() {
 	now := time.Now().Unix()
 	t.Usec = int32(now / 1000)
@@ -176,126 +187,287 @@ func (f *Futx) FtOuTv(u *Utmpx) {
 	u.Time.Usec = t % 1000000
 }
 
-// Write an event into the Wtmp file. An error is returned if the event
-// cannot be appended to the Wtmp file.
-func WriteWtmp(user, id string, pid int32, utype int16, line string) error {
-
-	u := new(Utmp)
-	u.Time.GetTimeOfDay()
-	u.Pid = pid
-	u.Type = utype
-	_ = copy(u.User[:], []byte(user))
-	_ = copy(u.Id[:], []byte(id))
-	_ = copy(u.Line[:], []byte(line))
-
-	name := new(syscall.Utsname)
-	if err := syscall.Uname(name); err == nil {
-		_ = copy(u.Host[:], general.Int8ToByte(name.Release[:]))
+func (f *Futx) FutxToUtx(u *Utmpx) {
+	if u == nil {
+		u = new(Utmpx)
 	}
 
-	return u.UpdWtmp(WtmpFile)
+	switch f.Type {
+	case BootTime:
+		fallthrough
+	case OldTime:
+		fallthrough
+	case NewTime:
+		fallthrough
+	case ShutdownTime:
+		break
+	case UserProcess:
+		f.UtOfId(u)
+		f.UtOfString(u, User)
+		f.UtOfString(u, Line)
+		f.UtOfString(u, Host)
+		f.UtOfPid(u)
+	case InitProcess:
+		f.UtOfId(u)
+		f.UtOfPid(u)
+	case LoginProcess:
+		f.UtOfId(u)
+		f.UtOfString(u, User)
+		f.UtOfString(u, Line)
+		f.UtOfPid(u)
+	case DeadProcess:
+		f.UtOfId(u)
+		f.UtOfPid(u)
+	default:
+		u.Type = Empty
+		return
+	}
+
+	f.UtOfType(u)
+	f.UtOfId(u)
 }
 
-// Write an event into the Utmp file. An error is returned if the event
-// cannot be written to the Utmp file.
-func WriteUtmp(user, id string, pid int32, utype int16, line, oldline string) error {
+func (f *Futx) UtxActiveAdd() error {
+	var (
+		e       error
+		partial = -1
+		ret     = 0
+	)
 
-	u := new(Utmp)
-	u.Time.GetTimeOfDay()
-	u.Pid = pid
-	u.Type = utype
-	_ = copy(u.User[:], []byte(user))
-	_ = copy(u.Id[:], []byte(id))
-	_ = copy(u.Line[:], []byte(line))
-
-	name := new(syscall.Utsname)
-	if err := syscall.Uname(name); err == nil {
-		_ = copy(u.Host[:], general.Int8ToByte(name.Release[:]))
-	}
-
-	file, lk, err := SafeOpen(UtmpFile)
+	file, lk, err := SafeOpen(UtxActive)
 	if err != nil {
-		goto done
+		return err
 	}
+	defer SafeClose(file, lk)
 
-	if utype == DeadProcess {
+	for {
+		var fe Futx
+		const size = unsafe.Sizeof(fe)
 
-		_ = SetUtEnt(file)
-		if r, st := u.GetUtid(file); r > -1 {
-			_ = copy(u.Line[:], st.Line[:])
-			if oldline != "" {
-				_ = copy([]byte(oldline), st.Line[:])
+		err = binary.Read(file, Order, &fe)
+		if err != nil && err != io.EOF {
+			e = err
+		}
+		if err == io.EOF {
+			break
+		}
+
+		switch fe.Type {
+		case BootTime:
+			// Leave these intact
+		case UserProcess, InitProcess, LoginProcess:
+			fallthrough
+		case DeadProcess:
+			if bytes.Equal(f.Id[:], fe.Id[:]) {
+				ret, e = file.Seek(-size, os.SEEK_CUR)
+				goto exact
+			}
+
+			if fe.Type != DeadProcess {
+				break
+			}
+
+			fallthrough
+		default:
+			if partial == -1 {
+				partial, e = file.Seek(0, os.SEEK_CUR)
+			}
+
+			if partial != -1 {
+				partial -= size
 			}
 		}
 	}
 
-	err = SetUtEnt(file)
+	// Didn't find a match, so use the partial match. If no
+	// partial was found, append the new record.
+	if partial != -1 {
+		ret = file.Seek(partial, os.SEEK_SET)
+	}
+
+exact:
+	// FreeBSD checks ret and sets error to errno if this
+	// condition is true. We already set e to the correct
+	// error value, so we don't need to test this.
+	// if ret == -1 { e = e }
+	if err := binary.Write(file, Order, f); err != nil {
+		e = err
+	}
+	// We can also skip the other conditions because we've
+	// set our return value in all the other places an error
+	// could pop up.
+	return e
+}
+
+func (f *Futx) UtxActiveRemove() error {
+	var e error
+
+	file, lk, err := SafeOpen(UtxActive)
 	if err != nil {
-		goto done
+		return err
+	}
+	defer SafeClose(file, lk)
+
+	for {
+		var fe Futx
+		const size = unsafe.Sizeof(fe)
+
+		err = binary.Read(file, Order, &fe)
+		if err != nil && err != io.EOF {
+			e = err
+		}
+		if err == io.EOF {
+			break
+		}
+
+		switch fe.Type {
+		case UserProcess, InitProcess:
+		case LoginProcess:
+			if bytes.Equal(f.Id[:], fe.Id[:]) {
+				continue
+			}
+
+			if n, err := file.Seek(-size, os.SEEK_CUR); err != nil {
+				e = err
+			} else if err := binary.Write(file, Order, f); err != nil {
+				e = err
+			}
+		}
 	}
 
-	err = u.PutUtLine(file)
+	return e
+}
 
-done:
-	if file != nil {
-		SafeClose(file, lk)
+func (f *Futx) UtxActiveInit() {
+	file, lk, err := SafeOpen(UtxActive)
+	if err != nil {
+		return
 	}
-	return err
+	defer SafeClose(file, lk)
+
+	// Init with a single boot record
+	_ = binary.Write(file, Order, f)
+}
+
+func UtxActivePurge() {
+	os.Truncate(UtxActive, 0)
+}
+
+func (f *Futx) UtxLastLoginAdd() error {
+	var (
+		e  error
+		fe Futx
+	)
+
+	file, lk, err := SafeOpen(UtxLastLog)
+	if err != nil {
+		return err
+	}
+	defer SafeClose(file, lk)
+
+	for {
+		const size = unsafe.Sizeof(fe)
+
+		err = binary.Read(file, Order, &fe)
+		if err != nil && err != io.EOF {
+			e = err
+		}
+		if err == io.EOF {
+			break
+		}
+
+		if !bytes.Equal(f.User[:], fe.User[:]) {
+			continue
+		}
+
+		_, e = file.Seek(-size, os.SEEK_CUR)
+		break
+	}
+
+	if e == nil {
+		return binary.Write(file, Order, &fe)
+	}
+
+	return e
+}
+
+func UtxLastLoginUpgrade() {
+	file, lk, err := SafeOpen(UtxLastLog)
+	if err != nil {
+		return err
+	}
+	defer SafeClose(file, lk)
+
+	f := new(Futx)
+	if stat, err := file.Stat(); err != nil &&
+		stat.Size()%unsafe.Sizeof(f) != 0 {
+
+		file.Truncate(0)
+	}
+}
+
+func (f *Futx) UtxLogAdd() error {
+	var (
+		e error
+		l int
+	)
+
+	// Create temporary buffer to hold f and write
+	// f as a byte slice.
+	buf := make([]byte, unsafe.Sizeof(*f))
+	b := bytes.NewBuffer(buf)
+	e = binary.Write(b, Order, f)
+
+	fu := b.Bytes()
+
+	for l = len(fl); l > 0 && fu[l-1]; l-- {
+		// Empty
+	}
+	l = endian.Htobe16(l)
+
+	file, lk, err := SafeOpen(UtxLog)
+	if err != nil {
+		return err
+	}
+	defer SafeClose(file, lk)
+
+	if e == nil {
+		return binary.Write(file, Order, fu)
+	}
+
+	return e
 }
 
 // Writes to name at the appropriate place in the database
+// Make sure to check the return value, because a non-nil
+// return means something went wrong and is the equivalent
+// of returning NULL on FreeBSD.
 func (u *Utmpx) PutUtLine(file *os.File) error {
-	const utmpSize = unsafe.Sizeof(*u)
+	var e error
 
-	// Save current position
-	cur, _ := u.GetUtid(file)
+	f := new(Futx)
+	u.UtxToFutx(f)
 
-	fileSize, err := file.Seek(0, os.SEEK_END)
-	if err != nil {
-		// Cannot safely get file size in order to write
-		return err
-	}
-
-	// If we can't write safely undo our changes and exit
-	if fileSize%int64(utmpSize) != 0 {
-		fileSize -= int64(utmpSize)
-
-		terr := syscall.Ftruncate(int(file.Fd()), fileSize)
-
-		if terr != nil {
-			err = fmt.Errorf("database is an invalid size, truncate failed: %s", terr)
-		} else {
-			err = fmt.Errorf("database is an invalid size, rewound to %d", fileSize)
+	switch f.Type {
+	case BootTime:
+		f.UtxActiveInit()
+		UtxLastLoginUpgrade()
+	case ShutdownTime:
+		UtxActivePurge()
+	case OldTime:
+		fallthrough
+	case NewTime:
+	case UserProcess:
+		e = f.UtxActiveAdd()
+		e = f.UtxLastLoginAdd()
+	case DeadProcess:
+		if e = f.UtxActiveRemove(); e != nil {
+			return e
 		}
-
-		return err
+	default:
+		return errors.New("EINVAL")
 	}
 
-	if cur == -1 {
-		cur = fileSize
-	}
-	_, err = file.Seek(cur, os.SEEK_SET)
-	if err != nil {
-		return err
-	}
-
-	return binary.Write(file, binary.LittleEndian, u)
-
-}
-
-// Write to both Utmp and Wtmp files
-func WriteUtmpWtmp(file *os.File, user, id string, pid int32, utype int16, line string) {
-	var oldline string
-
-	if user == "" {
-		return
-	}
-
-	WriteUtmp(user, id, pid, utype, line, oldline)
-	if line == "" && line[0] == 0 {
-		line = oldline
-	}
-	WriteWtmp(user, id, pid, utype, line)
-
-	return
+	e = f.UtxLogAdd()
+	return e
 }
