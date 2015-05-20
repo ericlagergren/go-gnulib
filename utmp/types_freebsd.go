@@ -22,7 +22,7 @@
 package utmp
 
 // #include <utmpx.h>
-// #include "utdb.x"
+// #include "utdb.h"
 import "C"
 
 const TypeNotDefined = false
