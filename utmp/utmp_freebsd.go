@@ -393,7 +393,7 @@ func (f *Futx) UtxLastLoginAdd() error {
 func UtxLastLoginUpgrade() {
 	file, lk, err := SafeOpen(UtxLastLog)
 	if err != nil {
-		return err
+		return
 	}
 	defer SafeClose(file, lk)
 
@@ -419,7 +419,7 @@ func (f *Futx) UtxLogAdd() error {
 
 	fu := b.Bytes()
 
-	for l = len(fu); l > 0 && fu[l-1]; l-- {
+	for l = len(fu); l > 0 && fu[l-1] == 0; l-- {
 		// Empty
 	}
 	l = endian.Htobe16(l)
