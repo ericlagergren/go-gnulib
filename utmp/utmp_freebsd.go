@@ -229,7 +229,7 @@ func (f *Futx) FutxToUtx() *Utmpx {
 func (f *Futx) UtxActiveAdd() error {
 	var (
 		e       error
-		partial = -1
+		partial = int64(-1)
 		ret     = 0
 	)
 
@@ -258,7 +258,7 @@ func (f *Futx) UtxActiveAdd() error {
 			fallthrough
 		case DeadProcess:
 			if bytes.Equal(f.Id[:], fe.Id[:]) {
-				ret, e = file.Seek(-size, os.SEEK_CUR)
+				ret, e = file.Seek(int64(-size), os.SEEK_CUR)
 				goto exact
 			}
 
@@ -273,7 +273,7 @@ func (f *Futx) UtxActiveAdd() error {
 			}
 
 			if partial != -1 {
-				partial -= size
+				partial -= int64(size)
 			}
 		}
 	}
@@ -326,7 +326,7 @@ func (f *Futx) UtxActiveRemove() error {
 				continue
 			}
 
-			if n, err := file.Seek(-size, os.SEEK_CUR); err != nil {
+			if n, err := file.Seek(int64(-size), os.SEEK_CUR); err != nil {
 				e = err
 			} else if err := binary.Write(file, Order, f); err != nil {
 				e = err
@@ -379,7 +379,7 @@ func (f *Futx) UtxLastLoginAdd() error {
 			continue
 		}
 
-		_, e = file.Seek(-size, os.SEEK_CUR)
+		_, e = file.Seek(int64(-size), os.SEEK_CUR)
 		break
 	}
 
