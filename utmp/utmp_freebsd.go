@@ -54,7 +54,7 @@ func (t *TimeVal) GetTimeOfDay() {
 	t.Sec = int32(now)
 }
 
-func (u *Utmpx) UtOfString(f *Futx, typ Utmacro) {
+func (u *Utmpx) UToFString(f *Futx, typ Utmacro) {
 	switch typ {
 	case User:
 		copy(f.User[:], u.User[:])
@@ -71,7 +71,7 @@ func (u *Utmpx) UtOfString(f *Futx, typ Utmacro) {
 // 	strncpy((fu)->fu_ ## field, (ut)->ut_ ## field,		\
 // 	    MIN(sizeof (fu)->fu_ ## field, sizeof (ut)->ut_ ## field));	\
 // } while (0)
-func (u *Utmpx) UtOfId(f *Futx) {
+func (u *Utmpx) UToFID(f *Futx) {
 	copy(f.Id[:], u.Id[:])
 }
 
@@ -79,14 +79,14 @@ func (u *Utmpx) UtOfId(f *Futx) {
 // 	memcpy((fu)->fu_id, (ut)->ut_id,				\
 // 	    MIN(sizeof (fu)->fu_id, sizeof (ut)->ut_id));		\
 // } while (0)
-func (u *Utmpx) UtOfPid(f *Futx) {
+func (u *Utmpx) UToFPID(f *Futx) {
 	f.Pid = uint32(u.Pid)
 }
 
 // #define	UTOF_TYPE(ut, fu) do { \
 // 	(fu)->fu_type = (ut)->ut_type;					\
 // } while (0)
-func (u *Utmpx) UtOfType(f *Futx) {
+func (u *Utmpx) UToFType(f *Futx) {
 	f.Type = uint8(u.Type)
 }
 
@@ -96,7 +96,7 @@ func (u *Utmpx) UtOfType(f *Futx) {
 // 	(fu)->fu_tv = htobe64((uint64_t)tv.tv_sec * 1000000 +		\
 // 	    (uint64_t)tv.tv_usec);					\
 // } while (0)
-func (u *Utmpx) UtOfTv(f *Futx) {
+func (u *Utmpx) UToFTV(f *Futx) {
 	tv := new(TimeVal)
 	tv.GetTimeOfDay()
 	f.Time = endian.Htobe64(uint64(u.Time.Sec*1000000) + uint64(tv.Usec))
@@ -113,29 +113,29 @@ func (u *Utmpx) UtxToFutx(f *Futx) {
 	case ShutdownTime:
 		break
 	case UserProcess:
-		u.UtOfId(f)
-		u.UtOfString(f, User)
-		u.UtOfString(f, Line)
-		u.UtOfString(f, Host)
-		u.UtOfPid(f)
+		u.UToFID(f)
+		u.UToFString(f, User)
+		u.UToFString(f, Line)
+		u.UToFString(f, Host)
+		u.UToFPID(f)
 	case InitProcess:
-		u.UtOfId(f)
-		u.UtOfPid(f)
+		u.UToFID(f)
+		u.UToFPID(f)
 	case LoginProcess:
-		u.UtOfId(f)
-		u.UtOfString(f, User)
-		u.UtOfString(f, Line)
-		u.UtOfPid(f)
+		u.UToFID(f)
+		u.UToFString(f, User)
+		u.UToFString(f, Line)
+		u.UToFPID(f)
 	case DeadProcess:
-		u.UtOfId(f)
-		u.UtOfPid(f)
+		u.UToFID(f)
+		u.UToFPID(f)
 	default:
 		f.Type = Empty
 		return
 	}
 
-	u.UtOfType(f)
-	u.UtOfId(f)
+	u.UToFType(f)
+	u.UToFID(f)
 }
 
 func (f *Futx) FToUString(u *Utmpx, typ Utmacro) {
@@ -155,7 +155,7 @@ func (f *Futx) FToUString(u *Utmpx, typ Utmacro) {
 // 	strncpy((fu)->fu_ ## field, (ut)->ut_ ## field,		\
 // 	    MIN(sizeof (fu)->fu_ ## field, sizeof (ut)->ut_ ## field));	\
 // } while (0)
-func (f *Futx) UtOfId(u *Utmpx) {
+func (f *Futx) FToUID(u *Utmpx) {
 	copy(u.Id[:], f.Id[:])
 }
 
@@ -170,7 +170,7 @@ func (f *Futx) FToUPID(u *Utmpx) {
 // #define	UTOF_TYPE(ut, fu) do { \
 // 	(fu)->fu_type = (ut)->ut_type;					\
 // } while (0)
-func (f *Futx) FtOuType(u *Utmpx) {
+func (f *Futx) FToUType(u *Utmpx) {
 	u.Type = int16(f.Type)
 }
 
@@ -180,7 +180,7 @@ func (f *Futx) FtOuType(u *Utmpx) {
 // 	(fu)->fu_tv = htobe64((uint64_t)tv.tv_sec * 1000000 +		\
 // 	    (uint64_t)tv.tv_usec);					\
 // } while (0)
-func (f *Futx) FtOuTv(u *Utmpx) {
+func (f *Futx) FToUTV(u *Utmpx) {
 	var t uint64
 	t = endian.Be64toh(f.Time)
 	u.Time.Sec = int32(t / 1000000)
@@ -200,29 +200,29 @@ func (f *Futx) FutxToUtx() *Utmpx {
 	case ShutdownTime:
 		break
 	case UserProcess:
-		f.UtOfId(u)
+		f.FToUID(u)
 		f.FToUString(u, User)
 		f.FToUString(u, Line)
 		f.FToUString(u, Host)
 		f.FToUPID(u)
 	case InitProcess:
-		f.UtOfId(u)
+		f.FToUID(u)
 		f.FToUPID(u)
 	case LoginProcess:
-		f.UtOfId(u)
+		f.FToUID(u)
 		f.FToUString(u, User)
 		f.FToUString(u, Line)
 		f.FToUPID(u)
 	case DeadProcess:
-		f.UtOfId(u)
+		f.FToUID(u)
 		f.FToUPID(u)
 	default:
 		u.Type = Empty
 		return u
 	}
 
-	f.UtOfType(u)
-	f.UtOfId(u)
+	f.FToUType(u)
+	f.FToUID(u)
 	return u
 }
 
