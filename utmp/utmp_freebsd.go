@@ -230,7 +230,7 @@ func (f *Futx) UtxActiveAdd() error {
 	var (
 		e, err  error
 		partial = int64(-1)
-		ret     = 0
+		ret     = int64(0)
 	)
 
 	file, lk, err := SafeOpen(UtxActive)
@@ -399,7 +399,7 @@ func UtxLastLoginUpgrade() {
 
 	f := new(Futx)
 	if stat, err := file.Stat(); err != nil &&
-		stat.Size()%unsafe.Sizeof(f) != 0 {
+		stat.Size()%int64(unsafe.Sizeof(f)) != 0 {
 
 		file.Truncate(0)
 	}
@@ -419,7 +419,7 @@ func (f *Futx) UtxLogAdd() error {
 
 	fu := b.Bytes()
 
-	for l = len(fl); l > 0 && fu[l-1]; l-- {
+	for l = len(fu); l > 0 && fu[l-1]; l-- {
 		// Empty
 	}
 	l = endian.Htobe16(l)
