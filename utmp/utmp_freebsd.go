@@ -80,14 +80,14 @@ func (u *Utmpx) UtOfId(f *Futx) {
 // 	    MIN(sizeof (fu)->fu_id, sizeof (ut)->ut_id));		\
 // } while (0)
 func (u *Utmpx) UtOfPid(f *Futx) {
-	copy(f.Pid[:], u.Pid[:])
+	f.Pid = uint32(u.Pid)
 }
 
 // #define	UTOF_TYPE(ut, fu) do { \
 // 	(fu)->fu_type = (ut)->ut_type;					\
 // } while (0)
 func (u *Utmpx) UtOfType(f *Futx) {
-	copy(f.Type[:], u.Type[:])
+	f.Type = uint8(u.Type)
 }
 
 // #define	UTOF_TV(fu) do { \
@@ -138,7 +138,7 @@ func (u *Utmpx) UtxToFutx(f *Futx) {
 	u.UtOfId(f)
 }
 
-func (f *Futx) FtOuString(u *Utmpx, typ Utmacro) {
+func (f *Futx) FToUString(u *Utmpx, typ Utmacro) {
 	switch typ {
 	case User:
 		copy(u.User[:], f.User[:])
@@ -163,15 +163,15 @@ func (f *Futx) UtOfId(u *Utmpx) {
 // 	memcpy((fu)->fu_id, (ut)->ut_id,				\
 // 	    MIN(sizeof (fu)->fu_id, sizeof (ut)->ut_id));		\
 // } while (0)
-func (f *Futx) FtOuPid(u *Utmpx) {
-	copy(u.Pid[:], f.Pid[:])
+func (f *Futx) FToUPID(u *Utmpx) {
+	u.Pid = int32(u.Pid)
 }
 
 // #define	UTOF_TYPE(ut, fu) do { \
 // 	(fu)->fu_type = (ut)->ut_type;					\
 // } while (0)
 func (f *Futx) FtOuType(u *Utmpx) {
-	copy(u.Type[:], f.Type[:])
+	u.Type = int16(f.Type)
 }
 
 // #define	UTOF_TV(fu) do { \
@@ -183,8 +183,8 @@ func (f *Futx) FtOuType(u *Utmpx) {
 func (f *Futx) FtOuTv(u *Utmpx) {
 	var t uint64
 	t = endian.Be64toh(f.Time)
-	u.Time.Sec = t / 1000000
-	u.Time.Usec = t % 1000000
+	u.Time.Sec = int32(t / 1000000)
+	u.Time.Usec = int32(t % 1000000)
 }
 
 func (f *Futx) FutxToUtx() *Utmpx {
@@ -201,28 +201,29 @@ func (f *Futx) FutxToUtx() *Utmpx {
 		break
 	case UserProcess:
 		f.UtOfId(u)
-		f.UtOfString(u, User)
-		f.UtOfString(u, Line)
-		f.UtOfString(u, Host)
-		f.UtOfPid(u)
+		f.FToUString(u, User)
+		f.FToUString(u, Line)
+		f.FToUString(u, Host)
+		f.FToUPID(u)
 	case InitProcess:
 		f.UtOfId(u)
-		f.UtOfPid(u)
+		f.FToUPID(u)
 	case LoginProcess:
 		f.UtOfId(u)
-		f.UtOfString(u, User)
-		f.UtOfString(u, Line)
-		f.UtOfPid(u)
+		f.FToUString(u, User)
+		f.FToUString(u, Line)
+		f.FToUPID(u)
 	case DeadProcess:
 		f.UtOfId(u)
-		f.UtOfPid(u)
+		f.FToUPID(u)
 	default:
 		u.Type = Empty
-		return
+		return u
 	}
 
 	f.UtOfType(u)
 	f.UtOfId(u)
+	return u
 }
 
 func (f *Futx) UtxActiveAdd() error {

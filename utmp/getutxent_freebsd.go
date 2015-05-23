@@ -20,7 +20,7 @@ func SetUtxDB(db int, file string) error {
 		if file == "" {
 			file = UtxActive
 		}
-	case UtxDBLastLog:
+	case UtxDBLastLogin:
 		if file == "" {
 			file = UtxLastLog
 		}
@@ -42,9 +42,10 @@ func SetUtxDB(db int, file string) error {
 	}
 
 	if db != UtxDBLog {
+		var fu Futx
 		// Is the file broken?
 		if stat, err := UFile.Stat(); err != nil &&
-			stat.Size()%unsafe.Sizeof(fu) != 0 {
+			uintptr(stat.Size())%unsafe.Sizeof(fu) != 0 {
 
 			_ = UFile.Close()
 			UFile = nil
@@ -60,7 +61,7 @@ func SetUtxDB(db int, file string) error {
 }
 
 func SetUtxEnt() {
-	SetUtxDB(UtxDBActive, nil)
+	SetUtxDB(UtxDBActive, "")
 }
 
 func EndUtxEnd() {
@@ -90,21 +91,21 @@ func (f *Futx) GetFutxEnt() error {
 		// length = endian.Be16toh(length)
 		if length == 0 {
 			// Seek forward one byte and try again
-			UFile.Seek(length+1, os.SEEK_CUR)
+			UFile.Seek(int64(length+1), os.SEEK_CUR)
 			goto retry
 		}
 
-		if length > unsafe.Sizeof(*f) {
+		if uintptr(length) > unsafe.Sizeof(*f) {
 			// Hell if I know...
 			if err := binary.Read(UFile, Order, f); err != nil {
 				return err
 			}
 
-			UFile.Seek(length-unsafe.Sizeof(*f), os.SEEK_CUR)
+			UFile.Seek(int64(uintptr(length)-unsafe.Sizeof(*f)), os.SEEK_CUR)
 		} else {
 			// Reset f because it's a partial record
 			f = new(Futx)
-			if err := binary.Read(UFile, Or, f); err != nil {
+			if err := binary.Read(UFile, Order, f); err != nil {
 				return err
 			}
 		}
@@ -156,7 +157,7 @@ func (u *Utmpx) GetUtxId() *Utmpx {
 				}
 			}
 		default:
-			if fu.Type == u.Type {
+			if int16(fu.Type) == u.Type {
 				goto found
 			}
 		}
@@ -194,17 +195,17 @@ func (u *Utmpx) GetUtxUser(user string) {
 
 	for {
 		if fu.GetFutxEnt() != nil {
-			return nil
+			return
 		}
 
 		switch fu.Type {
 		case UserProcess:
-			if bytes.Compare(fu.User[:], bu) {
+			if bytes.Equal(fu.User[:], bu) {
 				goto found
 			}
 		}
 	}
 
 found:
-	return fu.FutxToUtx()
+	u = fu.FutxToUtx()
 }
