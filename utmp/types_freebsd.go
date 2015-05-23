@@ -52,8 +52,10 @@ const (
 	UtxLog = C._PATH_UTX_LOG
 )
 
+type Utmacro int
+
 const (
-	User = iota
+	User Utmacro = iota
 	Line
 	Host
 )
