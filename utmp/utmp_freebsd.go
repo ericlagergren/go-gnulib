@@ -418,6 +418,7 @@ func (f *Futx) UtxLogAdd() error {
 
 	fu := b.Bytes()
 
+	// Trim the entry's trailing null bytes.
 	for l = len(fu); l > 0 && fu[l-1] == 0; l-- {
 		// Empty
 	}
