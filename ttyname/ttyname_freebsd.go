@@ -63,12 +63,12 @@ func FDevName(fd uintptr, buf []byte, len int) bool {
 
 func TtyName(fd uintptr) (string, error) {
 	if !IsAtty(fd) {
-		return "", NotTty
+		return "", ErrNotTty
 	}
 
 	length := len(nameBuf)
 	if !FDevName(fd, nameBuf, length) {
-		return "", NotFound
+		return "", ErrNotFound
 	}
 
 	return string(nameBuf)

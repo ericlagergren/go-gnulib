@@ -65,7 +65,7 @@ func TtyName(fd uintptr) (string, error) {
 
 	// Does FD even describe a terminal? ;)
 	if !IsAtty(fd) {
-		return "", NotTty
+		return "", ErrNotTty
 	}
 
 	buf := make([]byte, syscall.MAX_PATH)

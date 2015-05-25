@@ -114,7 +114,7 @@ func checkDirs(dir string) (string, error) {
 
 	}
 
-	return "", NotFound
+	return "", ErrNotFound
 }
 
 // quick IsAtty check
@@ -136,7 +136,7 @@ func TtyName(fd uintptr) (string, error) {
 
 	// Does `fd` even describe a terminal? ;)
 	if !IsAtty(fd) {
-		return "", NotTty
+		return "", ErrNotTty
 	}
 
 	// Gather inode and rdev info about fd
@@ -147,7 +147,7 @@ func TtyName(fd uintptr) (string, error) {
 
 	// Needs to be a character device
 	if os.FileMode(Stat.Mode)&os.ModeCharDevice != 0 {
-		return "", NotTty
+		return "", ErrNotTty
 	}
 
 	// strace of GNU's tty stats the return of readlink(/proc/self/fd)
@@ -176,5 +176,5 @@ func TtyName(fd uintptr) (string, error) {
 		return checkDirs("/dev/")
 	}
 
-	return "", NotFound
+	return "", ErrNotFound
 }
