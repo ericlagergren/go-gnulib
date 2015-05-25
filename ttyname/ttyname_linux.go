@@ -34,13 +34,13 @@ import (
 )
 
 const (
-	dev  = "/dev"
+	dev  = "/dev/"
 	proc = "/proc/self/fd/0"
 )
 
 var (
-	NotFound   = errors.New("device not found")
-	NotTty     = errors.New("not a tty device")
+	NotFound   = errors.New("Device not found")
+	NotTty     = errors.New("Not a tty device")
 	searchDevs = []string{
 		"/dev/pts/",
 		"/dev/console",
@@ -176,7 +176,7 @@ func TtyName(fd uintptr) (string, error) {
 
 	// If we can't find it above, do full scan of /dev/
 	if name == "" {
-		return checkDirs(dev)
+		return checkDirs("/dev/")
 	}
 
 	return "", NotFound
