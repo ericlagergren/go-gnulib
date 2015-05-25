@@ -2,4 +2,4 @@ package ttyname
 
 import "errors"
 
-var NotTty = errors.New("Not a tty device")
+var ErrNotTty = errors.New("Not a tty device")
