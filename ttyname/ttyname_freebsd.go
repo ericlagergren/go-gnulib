@@ -34,7 +34,7 @@ func ioc(inout, group, num, len uint64) uint64 {
 }
 
 func iow(g, n uint64, t fiodgname_arg) uint64 {
-	return ioc(IOC_IN, g, n, unsafe.Sizeof(t))
+	return ioc(IOC_IN, g, n, uint64(unsafe.Sizeof(t)))
 }
 
 // IsAtty maps to libc's isatty
@@ -50,10 +50,10 @@ func IsAtty(fd uintptr) bool {
 	return err == 0
 }
 
-func FDevName(fd uintptr) string {
+func FDevName(fd uintptr, buf []byte, len int) bool {
 	var (
-		fa        = fiodgname_arg
-		FOIDGNAME = iow('f', 120, fa)
+		fgn       = fiodgname_arg{len, buf}
+		FOIDGNAME = iow('f', 120, fgn)
 	)
 
 	_, _, err := syscall.Syscall6(syscall.SYS_IOCTL, fd,
@@ -62,6 +62,7 @@ func FDevName(fd uintptr) string {
 		0,
 		0,
 		0)
+	return err == 0
 }
 
 func TtyName(fd uintptr) (string, error) {
@@ -69,4 +70,10 @@ func TtyName(fd uintptr) (string, error) {
 		return "", NotTty
 	}
 
+	length := len(nameBuf)
+	if !FDevName(fd, nameBuf, length) {
+	   	return "", NotFound
+	}
+
+	return string(nameBuf)
 }
