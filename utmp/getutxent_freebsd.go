@@ -14,6 +14,7 @@ var (
 )
 
 func SetUtxDB(db int, file string) error {
+     	var err error
 
 	switch db {
 	case UtxDBActive:
@@ -34,9 +35,9 @@ func SetUtxDB(db int, file string) error {
 
 	if UFile != nil {
 		_ = UFile.Close()
-	}
+}
 
-	f, err := os.Open(file)
+	UFile, err = os.Open(file)
 	if err != nil {
 		return err
 	}

@@ -230,7 +230,6 @@ func (f *Futx) UtxActiveAdd() error {
 	var (
 		e, err  error
 		partial = int64(-1)
-		ret     = int64(0)
 	)
 
 	file, lk, err := SafeOpen(UtxActive)
@@ -258,7 +257,7 @@ func (f *Futx) UtxActiveAdd() error {
 			fallthrough
 		case DeadProcess:
 			if bytes.Equal(f.Id[:], fe.Id[:]) {
-				ret, e = file.Seek(-int64(size), os.SEEK_CUR)
+				_, e = file.Seek(-int64(size), os.SEEK_CUR)
 				goto exact
 			}
 
@@ -281,7 +280,7 @@ func (f *Futx) UtxActiveAdd() error {
 	// Didn't find a match, so use the partial match. If no
 	// partial was found, append the new record.
 	if partial != -1 {
-		ret, err = file.Seek(partial, os.SEEK_SET)
+		_, err = file.Seek(partial, os.SEEK_SET)
 	}
 
 exact:
@@ -326,7 +325,7 @@ func (f *Futx) UtxActiveRemove() error {
 				continue
 			}
 
-			if n, err := file.Seek(-int64(size), os.SEEK_CUR); err != nil {
+			if _, err := file.Seek(-int64(size), os.SEEK_CUR); err != nil {
 				e = err
 			} else if err := binary.Write(file, Order, f); err != nil {
 				e = err
@@ -422,7 +421,6 @@ func (f *Futx) UtxLogAdd() error {
 	for l = len(fu); l > 0 && fu[l-1] == 0; l-- {
 		// Empty
 	}
-	l = endian.Htobe16(l)
 
 	file, lk, err := SafeOpen(UtxLog)
 	if err != nil {
