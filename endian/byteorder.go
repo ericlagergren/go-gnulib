@@ -9,6 +9,13 @@ const (
 	LittleEndian
 )
 
+func Htobe16(x uint16) uint16 {
+	if ByteOrder == BigEndian {
+		return x
+	}
+	return Bswap16(x)
+}
+
 func Htobe32(x uint32) uint32 {
 	if ByteOrder == BigEndian {
 		return x
@@ -21,6 +28,13 @@ func Htobe64(x uint64) uint64 {
 		return x
 	}
 	return Bswap64(x)
+}
+
+func Htole16(x uint16) uint16 {
+	if ByteOrder == LittleEndian {
+		return x
+	}
+	return Bswap16(x)
 }
 
 func Htole32(x uint32) uint32 {
