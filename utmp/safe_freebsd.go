@@ -48,6 +48,6 @@ func Unlock(file *os.File, lk *syscall.Flock_t) error {
 		return fmt.Errorf("file or lock are nil file: %s lk: %v", file.Name(), lk)
 	}
 
-	lk.Type = syscall.F_ULOCK
+	lk.Type = syscall.F_UNLCK
 	return syscall.FcntlFlock(file.Fd(), syscall.F_SETLK, lk)
 }

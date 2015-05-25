@@ -1,5 +1,9 @@
 package endian
 
+func Bswap16(x uint16) uint16 {
+	return ((x << 8) & 0xff00) | ((x >> 8) & 0x00ff)
+}
+
 func Bswap32(x uint32) uint32 {
 	return ((x << 24) & 0xff000000) |
 		((x << 8) & 0x00ff0000) |
