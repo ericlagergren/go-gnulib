@@ -22,7 +22,6 @@
 package ttyname
 
 import (
-	"errors"
 	"io"
 	"os"
 	"path"
@@ -39,8 +38,6 @@ const (
 )
 
 var (
-	NotFound   = errors.New("Device not found")
-	NotTty     = errors.New("Not a tty device")
 	searchDevs = []string{
 		"/dev/pts/",
 		"/dev/console",

@@ -5,7 +5,6 @@ package ttyname
 // #include <sys/ioctl.h>
 import "C"
 import (
-	"errors"
 	"syscall"
 	"unsafe"
 )
@@ -18,9 +17,6 @@ const (
 )
 
 var (
-	NotFound = errors.New("Device not found")
-	NotTty   = errors.New("Not a tty device")
-
 	nameBuf = make([]byte, len(dev)+maxPathLen)
 )
 
@@ -72,7 +68,7 @@ func TtyName(fd uintptr) (string, error) {
 
 	length := len(nameBuf)
 	if !FDevName(fd, nameBuf, length) {
-	   	return "", NotFound
+		return "", NotFound
 	}
 
 	return string(nameBuf)
