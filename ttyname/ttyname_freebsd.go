@@ -10,11 +10,9 @@ import (
 )
 
 const (
-	dev          = C._PATH_DEV // Usually "/dev/"
-	maxPathLen   = C.MAXNAMLEN // Usually 255
-	IOCPARM_MASK = C.IOCPARM_MAX
-	IOC_IN       = C.IOC_IN
-	FIODGNAME    = C.FIODGNAME
+	dev        = C._PATH_DEV // Usually "/dev/"
+	maxPathLen = C.MAXNAMLEN // Usually 255
+	fiodgname  = C.FIODGNAME
 )
 
 var (
@@ -36,6 +34,7 @@ func IsAtty(fd uintptr) bool {
 		0,
 		0,
 		0)
+
 	return err == 0
 }
 
@@ -43,7 +42,7 @@ func FDevName(fd uintptr, buf []byte, len int) bool {
 	fgn := fiodgname_arg{len, buf}
 
 	_, _, err := syscall.Syscall6(syscall.SYS_IOCTL, fd,
-		uintptr(FIODGNAME),
+		uintptr(fiodgname),
 		uintptr(unsafe.Pointer(&fgn)),
 		0,
 		0,
