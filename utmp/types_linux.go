@@ -21,11 +21,20 @@
 
 package utmp
 
+// #include <stdio.h>
 // #include <utmp.h>
 // #include <lastlog.h>
+// #include "readutmp.h"
 import "C"
 
-const TypeNotDefined = false
+// Misc.
+const (
+	TypeNotDefined = C.UT_TYPE_NOT_DEFINED == 0
+	UserSize       = C.UT_USER_SIZE
+)
+
+// Expose stdio's BUFSIZ variable.
+const BufSiz = C.BUFSIZ
 
 // Values for Utmp.Type field
 const (
@@ -61,8 +70,8 @@ const (
 
 // Options for ReadUtmp
 const (
-	CheckPIDs       = 1
-	ReadUserProcess = 2
+	CheckPIDs       = C.READ_UTMP_CHECK_PIDS
+	ReadUserProcess = C.READ_UTMP_USER_PROCESS
 )
 
 // Structure describing the status of a terminated process.

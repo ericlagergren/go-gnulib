@@ -40,16 +40,17 @@ func EndUtEnt(file *os.File) error {
 	return file.Close()
 }
 
-func (u *Utmp) GetUtEnt(file *os.File) (error, *Utmp) {
-	un := new(Utmp)
-	err := binary.Read(file, binary.LittleEndian, un)
-
-	return err, un
+func GetUtEnt(file *os.File) *Utmp {
+	var u Utmp
+	if err := binary.Read(file, binary.LittleEndian, &u); err != nil {
+		return nil
+	}
+	return &u
 }
 
 // Searches forward from point in file and finds the correct entry based on id
 // Returns -1 if no appropriate entry is found
-func (u *Utmp) GetUtid(file *os.File) (int64, *Utmp) {
+func (u *Utmp) GetUtid(file *os.File) (*Utmp, int64) {
 
 	// These constants aren't guarenteed to be within a certain range,
 	// so we can't check with '<' and '>'
@@ -62,7 +63,7 @@ func (u *Utmp) GetUtid(file *os.File) (int64, *Utmp) {
 		u.Type != UserProcess &&
 		u.Type != DeadProcess {
 
-		return -1, nil
+		return nil, -1
 	}
 
 	const size = int(unsafe.Sizeof(*u))
@@ -113,7 +114,7 @@ func (u *Utmp) GetUtid(file *os.File) (int64, *Utmp) {
 		}
 	}
 
-	return -1, nil
+	return nil, -1
 }
 
 func (u *Utmp) GetUtLine(file *os.File) (*Utmp, error) {

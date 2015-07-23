@@ -87,7 +87,7 @@ func WriteUtmp(user, id string, pid int32, utype int16, line, oldline string) er
 	if utype == DeadProcess {
 
 		_ = SetUtEnt(file)
-		if r, st := u.GetUtid(file); r > -1 {
+		if st, r := u.GetUtid(file); r > -1 {
 			_ = copy(u.Line[:], st.Line[:])
 			if oldline != "" {
 				_ = copy([]byte(oldline), st.Line[:])
@@ -114,7 +114,7 @@ func (u *Utmp) PutUtLine(file *os.File) error {
 	const utmpSize = unsafe.Sizeof(*u)
 
 	// Save current position
-	cur, _ := u.GetUtid(file)
+	_, cur := u.GetUtid(file)
 
 	fileSize, err := file.Seek(0, os.SEEK_END)
 	if err != nil {

@@ -22,8 +22,6 @@
 package utmp
 
 import (
-	"encoding/binary"
-	"io"
 	"os"
 	"syscall"
 
@@ -33,15 +31,15 @@ import (
 // Determines whether the Utmp entry is desired by the user who asked for
 // the specified options
 func (u *Utmp) IsDesirable(opts int) bool {
-	p := u.IsUserProcess()
-	if (opts&ReadUserProcess != 0) && !p {
+	userProc := u.IsUserProcess()
+	if (opts&ReadUserProcess != 0) && !userProc {
 		return false
 	}
 
 	if (opts&CheckPIDs != 0) &&
-		p &&
+		userProc &&
 		0 < u.Pid &&
-		(syscall.Kill(int(u.Pid), 0) != syscall.ESRCH) {
+		(syscall.Kill(int(u.Pid), 0) == syscall.ESRCH) {
 
 		return false
 	}
@@ -75,48 +73,32 @@ func (u *Utmp) ExtractTrimmedName() string {
 //
 // This differs from GNU's because it assigns to the slice US even if
 // an error is found.
-//
-// ReadUtmp asks for a pointer to a slice because if US is smaller than
-// entries, we change the pointer and grow the slice as needed. This is
-// generally the same speed as maps for smaller number of entries; for
-// entries over 10,000 or so maps' speed plummets.
-func ReadUtmp(fname string, entries *uint64, us *[]Utmp, opts int) error {
-	var e error
+func ReadUtmp(fname string, entries *uint64, size int, opts int) ([]*Utmp, error) {
+	var err error
 
-	fi, err := os.OpenFile(fname, os.O_RDONLY, os.ModeExclusive)
+	file, err := os.OpenFile(fname, os.O_RDONLY, os.ModeExclusive)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	defer fi.Close()
+	defer file.Close()
 
-	i := uint64(0)
+	var (
+		us   = make([]*Utmp, 0, size)
+		u    *Utmp
+		read = uint64(0)
+	)
+
 	for {
-		var u Utmp
-
-		err = binary.Read(fi, binary.LittleEndian, &u)
-		if err != nil && err != io.EOF {
-			e = err
-		}
-		if err == io.EOF {
+		if u = GetUtEnt(file); u == nil {
 			break
 		}
 
 		if u.IsDesirable(opts) {
-			// Grow if needed
-			if len(*us) <= int(i) {
-				*us = append(*us, u)
-			} else {
-				(*us)[i] = u
-			}
-
-			i++
-		}
-
-		if i == *entries && i > 0 {
-			break
+			us = append(us, u)
+			read++
 		}
 	}
-	*entries = i
 
-	return e
+	*entries = read
+	return us, err
 }
