@@ -1,3 +1,5 @@
+// +build !windows
+
 package ttyname
 
 import "errors"
