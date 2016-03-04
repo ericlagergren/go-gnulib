@@ -1,0 +1,312 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BITROTATE_INLINE	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/bitrotate.h	31;"	d
+CYCLE_CHECK_H	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/cycle-check.h	21;"	d
+CYCLE_CHECK_REFLECT_CHDIR_UP	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/cycle-check.h	38;"	d
+DEFAULT_GROWTH_FACTOR	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	117;"	d	file:
+DEFAULT_GROWTH_THRESHOLD	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	116;"	d	file:
+DEFAULT_SHRINK_FACTOR	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	126;"	d	file:
+DEFAULT_SHRINK_THRESHOLD	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	125;"	d	file:
+DEV_INO_H	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/dev-ino.h	2;"	d
+END_UTMP_ENT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	47;"	d
+END_UTMP_ENT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	84;"	d
+FTS	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^} FTS;$/;"	t	typeref:struct:__anon1
+FTSENT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^} FTSENT;$/;"	t	typeref:struct:_ftsent
+FTS_AGAIN	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	245;"	d
+FTS_COMFOLLOW	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	94;"	d
+FTS_CWDFD	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	135;"	d
+FTS_D	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	225;"	d
+FTS_DC	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	226;"	d
+FTS_DEFAULT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	227;"	d
+FTS_DEFER_STAT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	150;"	d
+FTS_DNR	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	228;"	d
+FTS_DONTCHDIR	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	241;"	d
+FTS_DOT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	229;"	d
+FTS_DP	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	230;"	d
+FTS_ERR	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	231;"	d
+FTS_F	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	232;"	d
+FTS_FOLLOW	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	246;"	d
+FTS_INIT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	233;"	d
+FTS_LOGICAL	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	95;"	d
+FTS_NAMEONLY	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	160;"	d
+FTS_NOATIME	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	152;"	d
+FTS_NOCHDIR	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	96;"	d
+FTS_NOINSTR	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	247;"	d
+FTS_NOSTAT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	97;"	d
+FTS_NS	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	234;"	d
+FTS_NSOK	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	235;"	d
+FTS_OPTIONMASK	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	158;"	d
+FTS_PHYSICAL	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	98;"	d
+FTS_ROOTLEVEL	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	219;"	d
+FTS_ROOTPARENTLEVEL	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	218;"	d
+FTS_SEEDOT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	99;"	d
+FTS_SKIP	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	248;"	d
+FTS_SL	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	236;"	d
+FTS_SLNONE	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	237;"	d
+FTS_STOP	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	161;"	d
+FTS_SYMFOLLOW	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	242;"	d
+FTS_TIGHT_CYCLE_CHECK	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	126;"	d
+FTS_VERBATIM	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	156;"	d
+FTS_W	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	238;"	d
+FTS_WHITEOUT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	101;"	d
+FTS_XDEV	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	100;"	d
+GET_UTMP_ENT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	46;"	d
+GET_UTMP_ENT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	83;"	d
+HASH_H_	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.h	25;"	d
+HASH_ONE_CHAR	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	407;"	d	file:
+HASH_ONE_CHAR	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	417;"	d	file:
+HAVE_STRUCT_XTMP_UT_EXIT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	134;"	d
+HAVE_STRUCT_XTMP_UT_ID	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	138;"	d
+HAVE_STRUCT_XTMP_UT_PID	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	142;"	d
+HAVE_UTMPX_H	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	29;"	d
+Hash_comparator	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.h	/^typedef bool (*Hash_comparator) (const void *, const void *);$/;"	t
+Hash_data_freer	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.h	/^typedef void (*Hash_data_freer) (void *);$/;"	t
+Hash_hasher	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.h	/^typedef size_t (*Hash_hasher) (const void *, size_t);$/;"	t
+Hash_processor	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.h	/^typedef bool (*Hash_processor) (void *, void *);$/;"	t
+Hash_table	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.h	/^typedef struct hash_table Hash_table;$/;"	t	typeref:struct:hash_table
+Hash_tuning	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.h	/^typedef struct hash_tuning Hash_tuning;$/;"	t	typeref:struct:hash_tuning
+IS_USER_PROCESS	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	202;"	d
+READ_UTMP_CHECK_PIDS	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	/^    READ_UTMP_CHECK_PIDS = 1,$/;"	e	enum:__anon4
+READ_UTMP_USER_PROCESS	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	/^    READ_UTMP_USER_PROCESS = 2$/;"	e	enum:__anon4
+SAME_INODE	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/same-inode.h	22;"	d
+SAME_INODE	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/same-inode.h	28;"	d
+SAME_INODE_H	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/same-inode.h	19;"	d
+SET_UTMP_ENT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	45;"	d
+SET_UTMP_ENT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	82;"	d
+STRUCT_UTMP	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	/^typedef struct UTMP_STRUCT_NAME STRUCT_UTMP;$/;"	t	typeref:struct:UTMP_STRUCT_NAME
+UTMP_FILE	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	151;"	d
+UTMP_FILE	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	159;"	d
+UTMP_FILE	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	160;"	d
+UTMP_FILE	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	169;"	d
+UTMP_NAME_FUNCTION	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	49;"	d
+UTMP_NAME_FUNCTION	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	51;"	d
+UTMP_NAME_FUNCTION	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	86;"	d
+UTMP_STRUCT_NAME	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	43;"	d
+UTMP_STRUCT_NAME	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	80;"	d
+UT_EXIT_E_EXIT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	100;"	d
+UT_EXIT_E_EXIT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	103;"	d
+UT_EXIT_E_EXIT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	105;"	d
+UT_EXIT_E_EXIT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	65;"	d
+UT_EXIT_E_EXIT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	68;"	d
+UT_EXIT_E_EXIT	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	70;"	d
+UT_EXIT_E_TERMINATION	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	55;"	d
+UT_EXIT_E_TERMINATION	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	58;"	d
+UT_EXIT_E_TERMINATION	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	60;"	d
+UT_EXIT_E_TERMINATION	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	90;"	d
+UT_EXIT_E_TERMINATION	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	93;"	d
+UT_EXIT_E_TERMINATION	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	95;"	d
+UT_PID	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	177;"	d
+UT_PID	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	179;"	d
+UT_TIME_MEMBER	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	44;"	d
+UT_TIME_MEMBER	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	81;"	d
+UT_TYPE_BOOT_TIME	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	191;"	d
+UT_TYPE_BOOT_TIME	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	193;"	d
+UT_TYPE_EQ	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	183;"	d
+UT_TYPE_EQ	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	186;"	d
+UT_TYPE_NOT_DEFINED	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	184;"	d
+UT_TYPE_NOT_DEFINED	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	187;"	d
+UT_TYPE_USER_PROCESS	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	197;"	d
+UT_TYPE_USER_PROCESS	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	199;"	d
+UT_USER	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	115;"	d
+UT_USER	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	118;"	d
+UT_USER	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	119;"	d
+UT_USER	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	125;"	d
+UT_USER	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	128;"	d
+UT_USER	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	129;"	d
+UT_USER_SIZE	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	/^enum { UT_USER_SIZE = sizeof UT_USER ((STRUCT_UTMP *) 0) };$/;"	e	enum:__anon3
+WTMP_FILE	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	155;"	d
+WTMP_FILE	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	164;"	d
+WTMP_FILE	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	165;"	d
+WTMP_FILE	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	173;"	d
+XALLOC_H_	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/xalloc.h	19;"	d
+XALLOC_INLINE	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/xalloc.h	30;"	d
+XCALLOC	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/xalloc.h	94;"	d
+XMALLOC	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/xalloc.h	79;"	d
+XNMALLOC	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/xalloc.h	83;"	d
+XZALLOC	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/xalloc.h	89;"	d
+_FTS_H	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	50;"	d
+_GL_ATTRIBUTE_ALLOC_SIZE	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/xalloc.h	46;"	d
+_GL_ATTRIBUTE_DEPRECATED	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.h	42;"	d
+_GL_ATTRIBUTE_DEPRECATED	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.h	44;"	d
+_GL_ATTRIBUTE_MALLOC	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/xalloc.h	39;"	d
+_GL_ATTRIBUTE_WUR	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.h	33;"	d
+_GL_ATTRIBUTE_WUR	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.h	35;"	d
+_GL_BITROTATE_H	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/bitrotate.h	20;"	d
+_PATH_UTX_ACTIVE	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/utxdb.h	34;"	d
+_PATH_UTX_LASTLOGIN	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/utxdb.h	35;"	d
+_PATH_UTX_LOG	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/utxdb.h	36;"	d
+_UTXDB_H_	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/utxdb.h	30;"	d
+__BEGIN_DECLS	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	63;"	d
+__BEGIN_DECLS	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	66;"	d
+__BEGIN_DECLS	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	69;"	d
+__END_DECLS	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	64;"	d
+__END_DECLS	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	67;"	d
+__END_DECLS	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	70;"	d
+__FLEXIBLE_ARRAY_MEMBER	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	55;"	d
+__FLEXIBLE_ARRAY_MEMBER	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	57;"	d
+__FLEXIBLE_ARRAY_MEMBER	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	60;"	d
+__GNUC_PREREQ	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	257;"	d
+__GNUC_PREREQ	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	260;"	d
+__READUTMP_H__	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	21;"	d
+__THROW	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	61;"	d
+__THROW	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	62;"	d
+__attribute_warn_unused_result__	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^  __THROW __attribute_warn_unused_result__;$/;"	v
+__attribute_warn_unused_result__	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^FTSENT  *fts_children (FTS *, int) __THROW __attribute_warn_unused_result__;$/;"	v
+__attribute_warn_unused_result__	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^FTSENT  *fts_read (FTS *) __THROW __attribute_warn_unused_result__;$/;"	v
+__attribute_warn_unused_result__	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^int      fts_close (FTS *) __THROW __attribute_warn_unused_result__;$/;"	v
+__attribute_warn_unused_result__	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	265;"	d
+__attribute_warn_unused_result__	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	266;"	d
+__attribute_warn_unused_result__	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	269;"	d
+__packed	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/utxdb.h	/^} __packed;$/;"	v	typeref:struct:futx
+_ftsent	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^typedef struct _ftsent {$/;"	s
+age	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/test.c	/^	int age;$/;"	m	struct:ftsent	file:
+allocate_entry	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^allocate_entry (Hash_table *table)$/;"	f	file:
+bucket	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^    struct hash_entry *bucket;$/;"	m	struct:hash_table	typeref:struct:hash_table::hash_entry	file:
+bucket_limit	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^    struct hash_entry const *bucket_limit;$/;"	m	struct:hash_table	file:
+chdir_counter	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/cycle-check.h	/^  uintmax_t chdir_counter;$/;"	m	struct:cycle_check_state
+check_tuning	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^check_tuning (Hash_table *table)$/;"	f	file:
+comparator	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^    Hash_comparator comparator;$/;"	m	struct:hash_table	file:
+compare	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/test.c	/^compare(void const *x, void const *y)$/;"	f	file:
+compute_bucket_size	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^compute_bucket_size (size_t candidate, const Hash_tuning *tuning)$/;"	f	file:
+cycle_check_state	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/cycle-check.h	/^struct cycle_check_state$/;"	s
+data	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^    void *data;$/;"	m	struct:hash_entry	file:
+data_freer	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^    Hash_data_freer data_freer;$/;"	m	struct:hash_table	file:
+default_tuning	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^static const Hash_tuning default_tuning =$/;"	v	file:
+dev	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/test.c	/^	int dev;$/;"	m	struct:foo	file:
+dev_ino	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/cycle-check.h	/^  struct dev_ino dev_ino;$/;"	m	struct:cycle_check_state	typeref:struct:cycle_check_state::dev_ino
+dev_ino	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/dev-ino.h	/^struct dev_ino$/;"	s
+ent	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/test.c	/^	struct ftsent *ent;$/;"	m	struct:foo	typeref:struct:foo::ftsent	file:
+entry_stack	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^    struct obstack entry_stack;$/;"	m	struct:hash_table	typeref:struct:hash_table::obstack	file:
+foo	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/test.c	/^struct foo$/;"	s	file:
+free_entry	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^free_entry (Hash_table *table, struct hash_entry *entry)$/;"	f	file:
+free_entry_list	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^    struct hash_entry *free_entry_list;$/;"	m	struct:hash_table	typeref:struct:hash_table::hash_entry	file:
+fts	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test.c	/^struct fts$/;"	s	file:
+fts_accpath	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        char *fts_accpath;              \/* access file name *\/$/;"	m	struct:_ftsent
+fts_array	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        struct _ftsent **fts_array;     \/* sort array *\/$/;"	m	struct:__anon1	typeref:struct:__anon1::_ftsent
+fts_array	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test.c	/^	struct ftsent **fts_array;$/;"	m	struct:fts	typeref:struct:fts::ftsent	file:
+fts_child	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        struct _ftsent *fts_child;      \/* linked list of children *\/$/;"	m	struct:__anon1	typeref:struct:__anon1::_ftsent
+fts_compar	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        int (*fts_compar) (struct _ftsent const **, struct _ftsent const **);$/;"	m	struct:__anon1
+fts_cur	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        struct _ftsent *fts_cur;        \/* current node *\/$/;"	m	struct:__anon1	typeref:struct:__anon1::_ftsent
+fts_cwd_fd	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        int fts_cwd_fd;                 \/* the file descriptor on which the$/;"	m	struct:__anon1
+fts_cycle	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        struct _ftsent *fts_cycle;      \/* cycle node *\/$/;"	m	struct:_ftsent	typeref:struct:_ftsent::_ftsent
+fts_cycle	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        } fts_cycle;$/;"	m	struct:__anon1	typeref:union:__anon1::__anon2
+fts_dev	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        dev_t fts_dev;                  \/* starting device # *\/$/;"	m	struct:__anon1
+fts_dirp	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        DIR *fts_dirp;                  \/* Dir pointer for any directory$/;"	m	struct:_ftsent
+fts_errno	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        int fts_errno;                  \/* errno for this node *\/$/;"	m	struct:_ftsent
+fts_fd_ring	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        I_ring fts_fd_ring;$/;"	m	struct:__anon1
+fts_flags	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        unsigned short int fts_flags;   \/* private flags for FTSENT structure *\/$/;"	m	struct:_ftsent
+fts_fts	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        FTS *fts_fts;                   \/* the file hierarchy itself *\/$/;"	m	struct:_ftsent
+fts_info	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        unsigned short int fts_info;    \/* user flags for FTSENT structure *\/$/;"	m	struct:_ftsent
+fts_instr	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        unsigned short int fts_instr;   \/* fts_set() instructions *\/$/;"	m	struct:_ftsent
+fts_leaf_optimization_works_ht	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        struct hash_table *fts_leaf_optimization_works_ht;$/;"	m	struct:__anon1	typeref:struct:__anon1::hash_table
+fts_level	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        ptrdiff_t fts_level;            \/* depth (-1 to N) *\/$/;"	m	struct:_ftsent
+fts_link	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        struct _ftsent *fts_link;       \/* next file in directory *\/$/;"	m	struct:_ftsent	typeref:struct:_ftsent::_ftsent
+fts_link	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test.c	/^	struct ftsent *fts_link;$/;"	m	struct:ftsent	typeref:struct:ftsent::ftsent	file:
+fts_n_dirs_remaining	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        nlink_t fts_n_dirs_remaining;   \/* count down from st_nlink *\/$/;"	m	struct:_ftsent
+fts_name	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        char fts_name[__FLEXIBLE_ARRAY_MEMBER]; \/* file name *\/$/;"	m	struct:_ftsent
+fts_namelen	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        size_t fts_namelen;             \/* strlen(fts_name) *\/$/;"	m	struct:_ftsent
+fts_nitems	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        size_t fts_nitems;              \/* elements in the sort array *\/$/;"	m	struct:__anon1
+fts_number	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        long fts_number;                \/* local numeric value *\/$/;"	m	struct:_ftsent
+fts_options	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        int fts_options;                \/* fts_open options, global flags *\/$/;"	m	struct:__anon1
+fts_parent	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        struct _ftsent *fts_parent;     \/* parent directory *\/$/;"	m	struct:_ftsent	typeref:struct:_ftsent::_ftsent
+fts_path	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        char *fts_path;                 \/* file name for this descent *\/$/;"	m	struct:__anon1
+fts_path	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        char *fts_path;                 \/* root name; == fts_fts->fts_path *\/$/;"	m	struct:_ftsent
+fts_pathlen	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        size_t fts_pathlen;             \/* sizeof(path) *\/$/;"	m	struct:__anon1
+fts_pathlen	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        size_t fts_pathlen;             \/* strlen(fts_path) *\/$/;"	m	struct:_ftsent
+fts_pointer	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        void *fts_pointer;              \/* local address value *\/$/;"	m	struct:_ftsent
+fts_rfd	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        int fts_rfd;                    \/* fd for root *\/$/;"	m	struct:__anon1
+fts_statp	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        struct stat fts_statp[1];       \/* stat(2) information *\/$/;"	m	struct:_ftsent	typeref:struct:_ftsent::stat
+fts_symfd	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^        int fts_symfd;                  \/* fd for symlink *\/$/;"	m	struct:_ftsent
+ftsent	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test.c	/^struct ftsent$/;"	s	file:
+ftsent	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/test.c	/^struct ftsent$/;"	s	file:
+fu_host	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/utxdb.h	/^	char		fu_host[128];$/;"	m	struct:futx
+fu_id	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/utxdb.h	/^	char		fu_id[8];$/;"	m	struct:futx
+fu_line	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/utxdb.h	/^	char		fu_line[16];$/;"	m	struct:futx
+fu_pid	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/utxdb.h	/^	uint32_t	fu_pid;$/;"	m	struct:futx
+fu_tv	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/utxdb.h	/^	uint64_t	fu_tv;$/;"	m	struct:futx
+fu_type	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/utxdb.h	/^	uint8_t		fu_type;$/;"	m	struct:futx
+fu_user	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/utxdb.h	/^	char		fu_user[32];$/;"	m	struct:futx
+futx	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/utxdb.h	/^struct futx {$/;"	s
+growth_factor	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.h	/^    float growth_factor;        \/* ratio of new bigger size to original size *\/$/;"	m	struct:hash_tuning
+growth_threshold	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.h	/^    float growth_threshold;     \/* ratio of used buckets to trigger a growth *\/$/;"	m	struct:hash_tuning
+hash	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/test.c	/^hash(void const *x, size_t table_size)$/;"	f	file:
+hash_clear	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_clear (Hash_table *table)$/;"	f
+hash_delete	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_delete (Hash_table *table, const void *entry)$/;"	f
+hash_do_for_each	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_do_for_each (const Hash_table *table, Hash_processor processor,$/;"	f
+hash_entry	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^struct hash_entry$/;"	s	file:
+hash_find_entry	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_find_entry (Hash_table *table, const void *entry,$/;"	f	file:
+hash_free	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_free (Hash_table *table)$/;"	f
+hash_get_entries	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_get_entries (const Hash_table *table, void **buffer,$/;"	f
+hash_get_first	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_get_first (const Hash_table *table)$/;"	f
+hash_get_max_bucket_length	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_get_max_bucket_length (const Hash_table *table)$/;"	f
+hash_get_n_buckets	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_get_n_buckets (const Hash_table *table)$/;"	f
+hash_get_n_buckets_used	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_get_n_buckets_used (const Hash_table *table)$/;"	f
+hash_get_n_entries	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_get_n_entries (const Hash_table *table)$/;"	f
+hash_get_next	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_get_next (const Hash_table *table, const void *entry)$/;"	f
+hash_initialize	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_initialize (size_t candidate, const Hash_tuning *tuning,$/;"	f
+hash_insert	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_insert (Hash_table *table, void const *entry)$/;"	f
+hash_insert_if_absent	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_insert_if_absent (Hash_table *table, void const *entry,$/;"	f
+hash_lookup	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_lookup (const Hash_table *table, const void *entry)$/;"	f
+hash_print	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_print (const Hash_table *table)$/;"	f
+hash_print_statistics	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_print_statistics (const Hash_table *table, FILE *stream)$/;"	f
+hash_rehash	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_rehash (Hash_table *table, size_t candidate)$/;"	f
+hash_reset_tuning	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_reset_tuning (Hash_tuning *tuning)$/;"	f
+hash_string	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_string (const char *string, size_t n_buckets)$/;"	f
+hash_table	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^struct hash_table$/;"	s	file:
+hash_table_ok	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^hash_table_ok (const Hash_table *table)$/;"	f
+hash_tuning	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.h	/^struct hash_tuning$/;"	s
+hasher	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^    Hash_hasher hasher;$/;"	m	struct:hash_table	file:
+ht	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^                struct hash_table *ht;$/;"	m	union:__anon1::__anon2	typeref:struct:__anon1::__anon2::hash_table
+ino	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/test.c	/^	int ino;$/;"	m	struct:foo	file:
+is_n_buckets	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.h	/^    bool is_n_buckets;          \/* if CANDIDATE really means table size *\/$/;"	m	struct:hash_tuning
+is_prime	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^is_prime (size_t candidate)$/;"	f	file:
+magic	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/cycle-check.h	/^  int magic;$/;"	m	struct:cycle_check_state
+main	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test.c	/^main(void) {$/;"	f
+main	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/test.c	/^int main(void)$/;"	f
+n_buckets	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^    size_t n_buckets;$/;"	m	struct:hash_table	file:
+n_buckets_used	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^    size_t n_buckets_used;$/;"	m	struct:hash_table	file:
+n_entries	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^    size_t n_entries;$/;"	m	struct:hash_table	file:
+name	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test.c	/^	const char* name;$/;"	m	struct:ftsent	file:
+name	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/test.c	/^	char* name;$/;"	m	struct:ftsent	file:
+namelen	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/test.c	/^	int namelen;$/;"	m	struct:ftsent	file:
+next	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^    struct hash_entry *next;$/;"	m	struct:hash_entry	typeref:struct:hash_entry::hash_entry	file:
+next_prime	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^next_prime (size_t candidate)$/;"	f	file:
+null	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test.c	/^void* null = ((void*)0);$/;"	v
+number	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/test.c	/^	long number;$/;"	m	struct:ftsent	file:
+obstack_chunk_alloc	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	39;"	d	file:
+obstack_chunk_free	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	42;"	d	file:
+raw_comparator	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^raw_comparator (const void *a, const void *b)$/;"	f	file:
+raw_hasher	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^raw_hasher (const void *data, size_t n)$/;"	f	file:
+rotl16	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/bitrotate.h	/^rotl16 (uint16_t x, int n)$/;"	f
+rotl32	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/bitrotate.h	/^rotl32 (uint32_t x, int n)$/;"	f
+rotl64	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/bitrotate.h	/^rotl64 (uint64_t x, int n)$/;"	f
+rotl8	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/bitrotate.h	/^rotl8 (uint8_t x, int n)$/;"	f
+rotl_sz	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/bitrotate.h	/^rotl_sz (size_t x, int n)$/;"	f
+rotr16	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/bitrotate.h	/^rotr16 (uint16_t x, int n)$/;"	f
+rotr32	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/bitrotate.h	/^rotr32 (uint32_t x, int n)$/;"	f
+rotr64	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/bitrotate.h	/^rotr64 (uint64_t x, int n)$/;"	f
+rotr8	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/bitrotate.h	/^rotr8 (uint8_t x, int n)$/;"	f
+rotr_sz	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/bitrotate.h	/^rotr_sz (size_t x, int n)$/;"	f
+safe_hasher	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^safe_hasher (const Hash_table *table, const void *key)$/;"	f	file:
+shrink_factor	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.h	/^    float shrink_factor;        \/* ratio of new smaller size to original size *\/$/;"	m	struct:hash_tuning
+shrink_threshold	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.h	/^    float shrink_threshold;     \/* ratio of used buckets to trigger a shrink *\/$/;"	m	struct:hash_tuning
+sort	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test.c	/^struct ftsent* sort(struct fts *sp, struct ftsent *head, int nitems) {$/;"	f
+st_dev	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/dev-ino.h	/^  dev_t st_dev;$/;"	m	struct:dev_ino
+st_ino	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/dev-ino.h	/^  ino_t st_ino;$/;"	m	struct:dev_ino
+state	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/fts_.h	/^                struct cycle_check_state *state;$/;"	m	union:__anon1::__anon2	typeref:struct:__anon1::__anon2::cycle_check_state
+transfer_entries	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^transfer_entries (Hash_table *dst, Hash_table *src, bool safe)$/;"	f	file:
+tuning	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/hash.c	/^    const Hash_tuning *tuning;$/;"	m	struct:hash_table	file:
+utmp_data	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/utmp/readutmp.h	40;"	d
+x2nrealloc	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/xalloc.h	/^x2nrealloc (T *p, size_t *pn, size_t s)$/;"	f
+x2nrealloc	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/xalloc.h	/^x2nrealloc (void *p, size_t *pn, size_t s)$/;"	f
+x2realloc	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/xalloc.h	/^x2realloc (T *p, size_t *pn)$/;"	f
+xcharalloc	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/xalloc.h	/^xcharalloc (size_t n)$/;"	f
+xmemdup	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/xalloc.h	/^xmemdup (T const *p, size_t s)$/;"	f
+xnmalloc	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/xalloc.h	/^xnmalloc (size_t n, size_t s)$/;"	f
+xnrealloc	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/xalloc.h	/^xnrealloc (T *p, size_t n, size_t s)$/;"	f
+xnrealloc	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/xalloc.h	/^xnrealloc (void *p, size_t n, size_t s)$/;"	f
+xrealloc	/home/eric/gopath/src/github.com/EricLagergren/go-gnulib/fts/test/xalloc.h	/^xrealloc (T *p, size_t s)$/;"	f

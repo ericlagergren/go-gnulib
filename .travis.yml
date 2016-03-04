@@ -1,0 +1,14 @@
+language: go
+
+go:
+  - 1.3
+  - 1.4
+  - tip
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -y coreutils
+  - sudo apt-get install -y strace
+
+after_failure:
+  - strace -f go test ./posix/. 2>&1 | grep fadvise64
