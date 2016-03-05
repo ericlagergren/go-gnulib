@@ -13,7 +13,7 @@ import (
 
 // UpdWtmp appends a Wtmp entry to the WTMP file.
 func (u *Utmp) UpdWtmp(path string) error {
-	file, err := Open(path)
+	file, err := Open(path, Writing)
 	if err != nil {
 		return err
 	}

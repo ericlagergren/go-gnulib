@@ -18,7 +18,6 @@ func (u *Utmp) IsDesirable(opts int) bool {
 	if (opts&ReadUserProcess != 0) && !userProc {
 		return false
 	}
-
 	return !((opts&CheckPIDs != 0) &&
 		userProc && 0 < u.Pid &&
 		(syscall.Kill(int(u.Pid), 0) == syscall.ESRCH))
@@ -53,7 +52,7 @@ func (u *Utmp) ExtractTrimmedName() string {
 // Returns an error if any reads fail without EOF, else nil
 func ReadUtmp(name string, opts int) ([]*Utmp, error) {
 
-	file, err := Open(name)
+	file, err := Open(name, Reading)
 	if err != nil {
 		return nil, err
 	}
@@ -73,6 +72,5 @@ func ReadUtmp(name string, opts int) ([]*Utmp, error) {
 			us = append(us, u)
 		}
 	}
-
 	return us, err
 }

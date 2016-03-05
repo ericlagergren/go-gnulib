@@ -16,23 +16,33 @@ type File struct {
 
 var pid = int32(os.Getpid())
 
+const (
+	Reading = iota
+	Writing
+	Both
+)
+
 // Open is a wrapper around os.OpenFile() that locks the file after opening
 // Returns an error if the file cannot be opened or the file cannot
-// be locked. The file is opened for appending.
-func Open(name string) (*File, error) {
-	file, err := os.OpenFile(name, os.O_RDWR, os.ModeExclusive)
+// be locked.
+func Open(name string, flags int) (*File, error) {
+	file, err := os.OpenFile(name, os.O_RDONLY, os.ModeExclusive)
 	if err != nil {
 		return nil, err
 	}
 
+	typ := int16(unix.F_RDLCK)
+	if flags == Writing || flags == Both {
+		typ = unix.F_WRLCK
+	}
+
 	// Lock the file so we're responsible
 	lk := unix.Flock_t{
-		Type: unix.F_WRLCK,
+		Type: typ,
 		Pid:  pid,
 	}
 
 	err = unix.FcntlFlock(file.Fd(), unix.F_SETLKW, &lk)
-
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +56,7 @@ func Open(name string) (*File, error) {
 // cannot be closed; unlocking errors are ignored.
 func (f *File) Close() error {
 	f.unlock()
-	return f.Close()
+	return f.File.Close()
 }
 
 // unlock unlocks an open file. unlocking errors are ignored.

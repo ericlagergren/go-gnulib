@@ -52,7 +52,7 @@ func WriteUtmp(user, id string, pid int32, typ int16, line string, oldline *stri
 		_ = copy(u.Host[:], util.Int8ToByte(name.Release[:]))
 	}
 
-	file, err := Open(UtmpxFile)
+	file, err := Open(UtmpxFile, Writing)
 	if err != nil {
 		return err
 	}

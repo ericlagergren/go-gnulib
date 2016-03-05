@@ -15,7 +15,7 @@ import (
 // If n is less than 0 it will read the entire file.
 func ReadLastLog(n int64) (logs []LastLog, err error) {
 
-	file, err := Open(LastLogFile)
+	file, err := Open(LastLogFile, Reading)
 	if err != nil {
 		return nil, err
 	}

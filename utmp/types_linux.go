@@ -1,5 +1,8 @@
 // +build ignore
 
+// go tool cgo -godefs types_linux.go
+// And then convert in8 to byte with search and replace.
+
 package utmp
 
 // #include <stdio.h>
