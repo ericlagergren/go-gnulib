@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/EricLagergren/go-gnulib/util"
 	"golang.org/x/sys/unix"
 )
 
@@ -31,7 +30,7 @@ func WriteWtmp(user, id string, pid int32, typ int16, line string) error {
 	if err != nil {
 		return err
 	}
-	_ = copy(u.Host[:], util.Int8ToByte(name.Release[:]))
+	_ = copy(u.Host[:], name.Release[:])
 	return u.UpdWtmp(Wtmpxfile)
 }
 
@@ -49,7 +48,7 @@ func WriteUtmp(user, id string, pid int32, typ int16, line string, oldline *stri
 
 	var name unix.Utsname
 	if err := unix.Uname(&name); err == nil {
-		_ = copy(u.Host[:], util.Int8ToByte(name.Release[:]))
+		_ = copy(u.Host[:], name.Release[:])
 	}
 
 	file, err := Open(UtmpxFile, Writing)
