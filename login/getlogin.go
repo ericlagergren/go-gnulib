@@ -20,7 +20,7 @@ func GetLogin() (string, error) {
 	u := new(utmp.Utmp)
 	_ = copy(u.Line[:], []byte(name[5:]))
 
-	file, err := os.Open(utmp.UtmpFile)
+	file, err := utmp.Open(utmp.UtmpxFile, utmp.Reading)
 	if err != nil {
 		return "", err
 	}
