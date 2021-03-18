@@ -1,7 +1,7 @@
 package fts
 
 import (
-	"github.com/EricLagergren/go-gnulib/cycle"
+	"github.com/marguerite/go-gnulib/cycle"
 )
 
 type ActiveDir struct {

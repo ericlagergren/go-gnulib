@@ -8,7 +8,7 @@ package utmp
 import (
 	"syscall"
 
-	"github.com/EricLagergren/go-gnulib/util"
+	"github.com/marguerite/go-gnulib/util"
 )
 
 // IsDesirable determines whether the Utmp entry is desired by the user who

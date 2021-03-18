@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"syscall"
 
-	k32 "github.com/EricLagergren/go-gnulib/windows"
+	k32 "github.com/marguerite/go-gnulib/windows"
 )
 
 func count(s []byte) int64 {

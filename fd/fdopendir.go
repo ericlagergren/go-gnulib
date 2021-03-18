@@ -4,8 +4,8 @@ package fd
 import (
 	"golang.org/x/sys/unix"
 
-	"github.com/EricLagergren/go-gnulib/cwd"
-	"github.com/EricLagergren/go-gnulib/dirent"
+	"github.com/marguerite/go-gnulib/cwd"
+	"github.com/marguerite/go-gnulib/dirent"
 )
 
 func isExpected(err error) bool {

@@ -3,8 +3,8 @@ package login
 import (
 	"os"
 
-	"github.com/EricLagergren/go-gnulib/ttyname"
-	"github.com/EricLagergren/go-gnulib/utmp"
+	"github.com/marguerite/go-gnulib/ttyname"
+	"github.com/marguerite/go-gnulib/utmp"
 )
 
 func GetLogin() (string, error) {

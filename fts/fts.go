@@ -37,8 +37,8 @@ import (
 	"sort"
 	"syscall"
 
-	"github.com/EricLagergren/go-gnulib/dirent"
-	"github.com/EricLagergren/go-gnulib/fd"
+	"github.com/marguerite/go-gnulib/dirent"
+	"github.com/marguerite/go-gnulib/fd"
 
 	"golang.org/x/sys/unix"
 

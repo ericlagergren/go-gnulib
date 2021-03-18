@@ -34,7 +34,7 @@ package fts
 import (
 	"syscall"
 
-	"github.com/EricLagergren/go-gnulib/dirent"
+	"github.com/marguerite/go-gnulib/dirent"
 	rb "github.com/EricLagergren/ringbuffer"
 )
 

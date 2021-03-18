@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/EricLagergren/go-gnulib/ifdef"
+	"github.com/marguerite/go-gnulib/ifdef"
 	"golang.org/x/sys/unix"
 )
 
