@@ -14,7 +14,7 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/EricLagergren/go-gnulib/endian"
+	"github.com/marguerite/go-gnulib/endian"
 )
 
 // Order is the current endianness for a system

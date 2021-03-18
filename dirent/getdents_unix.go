@@ -9,7 +9,7 @@ import (
 
 	"golang.org/x/sys/unix"
 
-	"github.com/EricLagergren/go-gnulib/util"
+	"github.com/marguerite/go-gnulib/util"
 )
 
 // Stream mimics C's DIR structure. It's a stream that can be read from

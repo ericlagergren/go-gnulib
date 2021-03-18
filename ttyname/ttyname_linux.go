@@ -4,8 +4,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/EricLagergren/go-gnulib/dirent"
-	"github.com/EricLagergren/go-gnulib/util"
+	"github.com/marguerite/go-gnulib/dirent"
+	"github.com/marguerite/go-gnulib/util"
 
 	"golang.org/x/sys/unix"
 )

@@ -4,9 +4,9 @@ package cwd
 import (
 	"os"
 
-	"github.com/EricLagergren/go-gnulib/chdir"
-	"github.com/EricLagergren/go-gnulib/util"
-	"github.com/EricLagergren/go-gnulib/ifdef"
+	"github.com/marguerite/go-gnulib/chdir"
+	"github.com/marguerite/go-gnulib/util"
+	"github.com/marguerite/go-gnulib/ifdef"
 
 	"golang.org/x/sys/unix"
 )

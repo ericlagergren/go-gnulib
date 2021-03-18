@@ -3,8 +3,8 @@ package login
 import (
 	"os"
 
-	"github.com/EricLagergren/go-gnulib/ttyname"
-	"github.com/EricLagergren/go-gnulib/utmp"
+	"github.com/marguerite/go-gnulib/ttyname"
+	"github.com/marguerite/go-gnulib/utmp"
 )
 
 func GetLogin() (string, error) {
@@ -20,7 +20,7 @@ func GetLogin() (string, error) {
 	u := new(utmp.Utmp)
 	_ = copy(u.Line[:], []byte(name[5:]))
 
-	file, err := os.Open(utmp.UtmpFile)
+	file, err := utmp.Open(utmp.UtmpxFile, utmp.Reading)
 	if err != nil {
 		return "", err
 	}

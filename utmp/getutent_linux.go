@@ -87,7 +87,7 @@ func (u *Utmp) GetUtLine(file *File) (*Utmp, error) {
 	var nu Utmp
 	for {
 
-		err := binary.Read(file, binary.LittleEndian, nu)
+		err := binary.Read(file, binary.LittleEndian, &nu)
 		if err != nil {
 			if err == io.EOF {
 				break
